@@ -1,6 +1,6 @@
 "use client";
+import { Cross1Icon, HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { AnimatePresence, motion } from "framer-motion";
-import { MenuIcon, X } from "lucide-react";
 import React, { useState, useEffect } from "react";
 
 const Header = () => {
@@ -126,7 +126,11 @@ const Header = () => {
 									exit={{ opacity: 0, rotate: 90 }}
 									transition={{ duration: 0.2 }}
 								>
-									{isMenuOpen ? <X size={20} /> : <MenuIcon size={20} />}
+									{isMenuOpen ? (
+										<Cross1Icon height={20} width={20} />
+									) : (
+										<HamburgerMenuIcon height={20} width={20} />
+									)}
 								</motion.div>
 							</AnimatePresence>
 						</motion.button>
