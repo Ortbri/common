@@ -1,6 +1,6 @@
 import { InstagramLogoIcon } from "@radix-ui/react-icons";
 import React from "react";
-import RecentInstagram from "./recentInstagram";
+import RecentInstagram from "../../components/recentInstagram";
 
 const Footer = () => {
 	return (
