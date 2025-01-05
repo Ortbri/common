@@ -1,41 +1,41 @@
+"use client";
+import { InstagramLogoIcon } from "@radix-ui/react-icons";
 import React from "react";
 
-function Footer() {
+const Footer = () => {
 	return (
-		<footer className="bg-neutral-900 py-12 text-white">
-			<div className="mx-auto max-w-7xl px-4">
-				<div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-					<div>
-						<h3 className="mb-4 text-lg font-medium">Contact</h3>
-						<p className="text-neutral-400">info@architecture.com</p>
-						<p className="text-neutral-400">+1 (555) 123-4567</p>
+		<footer className="px-10 py-12">
+			<div className="flex flex-col gap-6 md:gap-8">
+				{/* title */}
+				<div className="flex justify-between">
+					<div className="flex flex-col">
+						<text className="text-4xl font-black">UWU ARCH</text>
+						<text className="text-md font-extralight">
+							LOS ANGELES CALIFORNIA
+						</text>
 					</div>
+					{/* social */}
 					<div>
-						<h3 className="mb-4 text-lg font-medium">Location</h3>
-						<p className="text-neutral-400">123 Design Street</p>
-						<p className="text-neutral-400">New York, NY 10001</p>
-					</div>
-					<div>
-						<h3 className="mb-4 text-lg font-medium">Follow Us</h3>
-						<div className="flex gap-4">
-							<a
-								href="https://www.instagram.com/architecture"
-								className="text-neutral-400 hover:text-white"
-							>
-								Instagram
-							</a>
-							<a
-								href="https://www.linkedin.com/company/architecture"
-								className="text-neutral-400 hover:text-white"
-							>
-								LinkedIn
-							</a>
-						</div>
+						<a
+							href="https://www.inst3agram.com/architecture"
+							className="transition-colors duration-200 hover:opacity-70"
+							aria-label="Follow us on Instagram"
+						>
+							<InstagramLogoIcon height={40} width={40} />
+						</a>
 					</div>
 				</div>
 			</div>
+
+			{/* rights */}
+			<div className="mt-4 pt-8 text-sm text-neutral-400">
+				<p>
+					&copy; {new Date().getFullYear()} Uwu Architecture Studio. All rights
+					reserved.
+				</p>
+			</div>
 		</footer>
 	);
-}
+};
 
 export default Footer;
