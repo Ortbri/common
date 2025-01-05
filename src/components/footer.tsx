@@ -1,6 +1,6 @@
-"use client";
 import { InstagramLogoIcon } from "@radix-ui/react-icons";
 import React from "react";
+import RecentInstagram from "./recentInstagram";
 
 const Footer = () => {
 	return (
@@ -17,7 +17,7 @@ const Footer = () => {
 					{/* social */}
 					<div>
 						<a
-							href="https://www.inst3agram.com/architecture"
+							href="https://www.instagram.com/uwu_arc/"
 							className="transition-colors duration-200 hover:opacity-70"
 							aria-label="Follow us on Instagram"
 						>
@@ -27,8 +27,9 @@ const Footer = () => {
 				</div>
 			</div>
 
+			<RecentInstagram />
 			{/* rights */}
-			<div className="mt-4 pt-8 text-sm text-neutral-400">
+			<div className="flex items-center justify-center pt-10 text-sm text-neutral-400">
 				<p>
 					&copy; {new Date().getFullYear()} Uwu Architecture Studio. All rights
 					reserved.
