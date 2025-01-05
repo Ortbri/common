@@ -1,5 +1,4 @@
-"use client";
-import { ArrowTopRightIcon, InstagramLogoIcon } from "@radix-ui/react-icons";
+import { ArrowTopRightIcon } from "@radix-ui/react-icons";
 
 const RecentInstagram = () => {
 	return (
@@ -11,7 +10,7 @@ const RecentInstagram = () => {
 						key={index}
 						className="hover:"
 					>
-						<div className="aspect-square rounded-xl bg-secondary/50" />
+						<div className="aspect-square rounded-xl bg-secondary" />
 					</a>
 				))}
 			</div>

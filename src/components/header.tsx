@@ -1,43 +1,180 @@
 "use client";
-
-import React from "react";
-import Link from "next/link";
+import { AnimatePresence, motion } from "framer-motion";
+import { MenuIcon, X } from "lucide-react";
+import React, { useState, useEffect } from "react";
 
 const Header = () => {
-	const navItems = [
-		{ name: "Projects", href: "/projects" },
-		{ name: "About", href: "/about" },
-		{ name: "Services", href: "/services" },
-		{ name: "Contact", href: "/contact" },
-	];
+	const [isScrolled, setIsScrolled] = useState(false);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+	useEffect(() => {
+		const handleScroll = () => {
+			setIsScrolled(window.scrollY > 20);
+		};
+		window.addEventListener("scroll", handleScroll);
+		return () => window.removeEventListener("scroll", handleScroll);
+	}, []);
+
+	const menuVariants = {
+		closed: {
+			opacity: 0,
+			y: "100%",
+			transition: {
+				type: "tween",
+				duration: 0.4,
+				ease: [0.4, 0, 0.2, 1],
+			},
+		},
+		open: {
+			opacity: 1,
+			y: 0,
+			transition: {
+				type: "tween",
+				duration: 0.4,
+				ease: [0.4, 0, 0.2, 1],
+			},
+		},
+	};
+
+	const menuItemVariants = {
+		closed: { opacity: 0, y: 20 },
+		open: (i: number) => ({
+			opacity: 1,
+			y: 0,
+			transition: {
+				delay: i * 0.1,
+				duration: 0.4,
+				ease: [0.4, 0, 0.2, 1],
+			},
+		}),
+	};
+
+	const headerVariants = {
+		top: {
+			backgroundColor: "rgba(255, 255, 255, 0)",
+			backdropFilter: "blur(0px)",
+		},
+		scrolled: {
+			backgroundColor: "rgba(255, 255, 255, 0.7)",
+			backdropFilter: "blur(16px)",
+		},
+	};
 
 	return (
-		<div>
-			<div
-				className={
-					"fixed inset-x-10 z-[5000] mx-auto flex max-w-7xl items-center justify-between px-5 py-2"
-				}
-				style={{
-					backdropFilter: "blur(8px) saturate(180%)",
-					backgroundColor: "rgba(255, 255, 255, 0.80)",
-				}}
+		<>
+			{/* floating header */}
+			<motion.header
+				className="fixed left-0 right-0 top-0 z-50"
+				initial="top"
+				animate={isScrolled ? "scrolled" : "top"}
+				variants={headerVariants}
+				transition={{ duration: 0.4 }}
 			>
-				{/* Desktop Navigation */}
-				<nav className="hidden flex-1 items-center justify-end space-x-8 md:flex">
-					{navItems.map((item) => (
-						<Link
-							key={item.name}
-							href={item.href}
-							className="group relative text-sm font-medium text-gray-700 transition-colors hover:text-black dark:text-gray-300 dark:hover:text-white"
+				<div className="mx-auto flex items-center justify-between px-6 py-2 lg:p-6">
+					{/* uwu arch */}
+					{/* <motion.div
+						className="flex flex-col"
+						initial={{ opacity: 0, x: -20 }}
+						animate={{ opacity: 1, x: 0 }}
+						transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+					>
+						<h1 className="text-2xl font-black">uwu</h1>
+						<p className="text-lg font-thin tracking-wider">architecture</p>
+					</motion.div> */}
+					{/* LOGO will go here */}
+					<div />
+
+					{/* buttons */}
+					<motion.div
+						className="flex items-center gap-4"
+						initial={{ opacity: 0, x: 20 }}
+						animate={{ opacity: 1, x: 0 }}
+						transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+					>
+						{/* contact button */}
+						{/* <motion.button
+							className="group relative cursor-pointer overflow-hidden rounded-full border-[1px] border-slate-300 bg-white px-6 py-2"
+							whileHover={{ scale: 1.1 }}
+							whileTap={{ scale: 0.95 }}
 						>
-							{item.name}
-							<span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-black transition-all duration-300 ease-out group-hover:w-full dark:bg-white" />
-						</Link>
-					))}
-				</nav>
-			</div>
-		</div>
+							<motion.span className="relative z-10 transition-colors group-hover:text-black">
+								contact
+							</motion.span>
+							<motion.div
+								className="absolute inset-0"
+								initial={{ x: "-100%" }}
+								whileHover={{ x: 0 }}
+								transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+							/>
+						</motion.button> */}
+
+						{/* menu button */}
+						<motion.button
+							onClick={() => setIsMenuOpen(!isMenuOpen)}
+							className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-[1px] border-slate-300 bg-white px-2"
+							whileHover={{
+								scale: 1.1,
+							}}
+							whileTap={{ scale: 0.95 }}
+							aria-label="Toggle Menu"
+						>
+							<AnimatePresence mode="wait">
+								<motion.div
+									key={isMenuOpen ? "close" : "open"}
+									initial={{ opacity: 0, rotate: -90 }}
+									animate={{ opacity: 1, rotate: 0 }}
+									exit={{ opacity: 0, rotate: 90 }}
+									transition={{ duration: 0.2 }}
+								>
+									{isMenuOpen ? <X size={20} /> : <MenuIcon size={20} />}
+								</motion.div>
+							</AnimatePresence>
+						</motion.button>
+					</motion.div>
+				</div>
+			</motion.header>
+
+			{/* open menu */}
+			<AnimatePresence>
+				{isMenuOpen && (
+					<motion.div
+						className="fixed inset-0 z-40 bg-white/90 backdrop-blur-md"
+						initial="closed"
+						animate="open"
+						exit="closed"
+						variants={menuVariants}
+					>
+						<nav className="flex h-full items-center justify-center">
+							<ul className="space-y-8 text-center">
+								{menuItems.map((item, i) => (
+									<motion.li
+										key={item.name}
+										custom={i}
+										variants={menuItemVariants}
+									>
+										<motion.a
+											href={item.href}
+											className="text-4xl font-thin"
+											whileHover={{ opacity: 0.3 }}
+										>
+											{item.name}
+										</motion.a>
+									</motion.li>
+								))}
+							</ul>
+						</nav>
+					</motion.div>
+				)}
+			</AnimatePresence>
+		</>
 	);
 };
+
+const menuItems = [
+	{ name: "Projects", href: "#projects" },
+	{ name: "Studio", href: "#studio" },
+	{ name: "Process", href: "#process" },
+	{ name: "Contact", href: "#contact" },
+];
 
 export default Header;
