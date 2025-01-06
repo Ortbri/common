@@ -2,7 +2,7 @@ import { ArrowTopRightIcon } from "@radix-ui/react-icons";
 
 const RecentInstagram = () => {
 	return (
-		<section className="mb-8 mt-8">
+		<section className="flex flex-col gap-6">
 			<div className="grid grid-cols-1 gap-4 md:grid-cols-3">
 				{[1, 2, 3].map((index) => (
 					<a
@@ -14,7 +14,7 @@ const RecentInstagram = () => {
 					</a>
 				))}
 			</div>
-			<div className="flex items-center justify-center gap-2 py-10">
+			<div className="g flex items-center justify-center">
 				<a
 					href="https://www.instagram.com/uwu_arc/"
 					target="_blank"
