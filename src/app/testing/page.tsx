@@ -1,4 +1,3 @@
-import Pricing from "@/pages/drawlings/pricing";
 import React from "react";
 
 function Testing() {
