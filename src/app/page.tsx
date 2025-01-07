@@ -1,3 +1,4 @@
+import { ThemeToggle } from "@/components/themeToggle";
 import { logout } from "./logout/actions";
 
 export default function Home() {
@@ -9,6 +10,7 @@ export default function Home() {
 			>
 				Testing route
 			</a>
+
 			<form action={logout}>
 				<button type="submit" className="bordered p-4">
 					logout

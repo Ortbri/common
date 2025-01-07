@@ -1,4 +1,5 @@
 "use client";
+import { ThemeToggle } from "@/components/themeToggle";
 import { Cross1Icon, HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useState, useEffect } from "react";
@@ -51,11 +52,11 @@ const Header = () => {
 
 	const headerVariants = {
 		top: {
-			backgroundColor: "rgba(255, 255, 255, 0)",
+			backgroundColor: "light:rgba(255, 255, 255, 0) dark:rgba(0,0,0, 0)",
 			backdropFilter: "blur(0px)",
 		},
 		scrolled: {
-			backgroundColor: "rgba(255, 255, 255, 0.7)",
+			backgroundColor: "light:rgba(255, 255, 255, 0.7) dark:rgba(0,0.0,.7)",
 			backdropFilter: "blur(16px)",
 		},
 	};
@@ -111,7 +112,7 @@ const Header = () => {
 						{/* menu button */}
 						<motion.button
 							onClick={() => setIsMenuOpen(!isMenuOpen)}
-							className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-[1px] border-slate-300 bg-white px-2"
+							className="light:bg-white border-neutral flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-[1px] px-2"
 							whileHover={{
 								scale: 1.1,
 							}}
@@ -141,33 +142,38 @@ const Header = () => {
 			{/* open menu */}
 			<AnimatePresence>
 				{isMenuOpen && (
-					<motion.div
-						className="fixed inset-0 z-40 bg-white/90 backdrop-blur-md"
-						initial="closed"
-						animate="open"
-						exit="closed"
-						variants={menuVariants}
-					>
-						<nav className="flex h-full items-center justify-center">
-							<ul className="space-y-8 text-center">
-								{menuItems.map((item, i) => (
-									<motion.li
-										key={item.name}
-										custom={i}
-										variants={menuItemVariants}
-									>
-										<motion.a
-											href={item.href}
-											className="text-4xl font-thin"
-											whileHover={{ opacity: 0.3 }}
+					<>
+						<motion.div
+							className="light:bg-white/90 dkar:bg-black/80 fixed inset-0 z-40 backdrop-blur-md"
+							initial="closed"
+							animate="open"
+							exit="closed"
+							variants={menuVariants}
+						>
+							<nav className="flex h-full items-center justify-center">
+								<ul className="space-y-8 text-center">
+									{menuItems.map((item, i) => (
+										<motion.li
+											key={item.name}
+											custom={i}
+											variants={menuItemVariants}
 										>
-											{item.name}
-										</motion.a>
-									</motion.li>
-								))}
-							</ul>
-						</nav>
-					</motion.div>
+											<motion.a
+												href={item.href}
+												className="text-4xl font-thin"
+												whileHover={{ opacity: 0.3 }}
+											>
+												{item.name}
+											</motion.a>
+										</motion.li>
+									))}
+								</ul>
+								<div className="absolute bottom-4 right-4">
+									<ThemeToggle />
+								</div>
+							</nav>
+						</motion.div>
+					</>
 				)}
 			</AnimatePresence>
 		</>
