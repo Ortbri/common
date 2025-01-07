@@ -1,13 +1,12 @@
-import Hero from "@/pages/home/hero";
-import Projects from "@/pages/home/projects";
-import What from "@/pages/home/what";
-
 export default function Home() {
 	return (
-		<div>
-			<Hero />
-			<What />
-			<Projects />
+		<div className="flex h-screen flex-col items-center justify-center">
+			<a
+				href="/testing"
+				className="rounded bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600 active:bg-blue-700"
+			>
+				Testing route
+			</a>
 		</div>
 	);
 }

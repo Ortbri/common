@@ -1,6 +1,4 @@
-import { InstagramLogoIcon } from "@radix-ui/react-icons";
 import React from "react";
-import RecentInstagram from "../../components/recentInstagram";
 
 const Footer = () => {
 	return (
@@ -8,14 +6,14 @@ const Footer = () => {
 			<div className="flex flex-col">
 				{/* title */}
 				<div className="flex justify-between">
-					<div className="flex flex-col">
+					{/* <div className="flex flex-col">
 						<text className="text-4xl font-black">UWU ARCH</text>
 						<text className="text-md font-extralight">
 							LOS ANGELES CALIFORNIA
 						</text>
-					</div>
+					</div> */}
 					{/* social */}
-					<div>
+					{/* <div>
 						<a
 							href="https://www.instagram.com/uwu_arc/"
 							className="transition-colors duration-200 hover:opacity-70"
@@ -23,17 +21,14 @@ const Footer = () => {
 						>
 							<InstagramLogoIcon height={40} width={40} />
 						</a>
-					</div>
+					</div> */}
 				</div>
 			</div>
 
-			<RecentInstagram />
+			{/* <RecentInstagram /> */}
 			{/* rights */}
 			<div className="flex items-center justify-center text-sm text-neutral-400">
-				<p>
-					&copy; {new Date().getFullYear()} Uwu Architecture Studio. All rights
-					reserved.
-				</p>
+				<p>&copy; {new Date().getFullYear()} Drawlings. All rights reserved.</p>
 			</div>
 		</footer>
 	);
