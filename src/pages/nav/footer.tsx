@@ -4,8 +4,8 @@ import RecentInstagram from "../../components/recentInstagram";
 
 const Footer = () => {
 	return (
-		<footer className="px-10 py-12">
-			<div className="flex flex-col gap-6 md:gap-8">
+		<footer className="flex flex-col gap-5 px-10 py-12">
+			<div className="flex flex-col">
 				{/* title */}
 				<div className="flex justify-between">
 					<div className="flex flex-col">
@@ -29,7 +29,7 @@ const Footer = () => {
 
 			<RecentInstagram />
 			{/* rights */}
-			<div className="flex items-center justify-center pt-10 text-sm text-neutral-400">
+			<div className="flex items-center justify-center text-sm text-neutral-400">
 				<p>
 					&copy; {new Date().getFullYear()} Uwu Architecture Studio. All rights
 					reserved.
