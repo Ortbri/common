@@ -25,8 +25,8 @@ export default async function Projects() {
 				<pre>{JSON.stringify(files, null, 2)}</pre>
 			</div>
 		);
-	} catch (error: any) {
+	} catch (error) {
 		console.error("Error details:", error);
-		return <div>Error loading files: {error.message}</div>;
+		return <div>Error loading files</div>;
 	}
 }
