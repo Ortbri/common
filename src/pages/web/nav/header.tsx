@@ -43,7 +43,7 @@ const Header = () => {
 			opacity: 1,
 			y: 0,
 			transition: {
-				delay: i * 0.1,
+				delay: i * 0.14,
 				duration: 0.4,
 				ease: [0.4, 0, 0.2, 1],
 			},
@@ -52,7 +52,7 @@ const Header = () => {
 
 	const headerVariants = {
 		top: {
-			backgroundColor: "light:rgba(255, 255, 255, 0) dark:rgba(0,0,0, 0)",
+			backgroundColor: "rgba(255, 255, 255, 0) ",
 			backdropFilter: "blur(0px)",
 		},
 		scrolled: {
@@ -71,7 +71,7 @@ const Header = () => {
 				variants={headerVariants}
 				transition={{ duration: 0.4 }}
 			>
-				<div className="mx-auto flex items-center justify-between px-6 py-2 lg:p-6">
+				<div className="mx-auto flex items-center justify-between px-4 py-4 lg:p-6">
 					{/* uwu arch */}
 					{/* <motion.div
 						className="flex flex-col"
@@ -112,7 +112,7 @@ const Header = () => {
 						{/* menu button */}
 						<motion.button
 							onClick={() => setIsMenuOpen(!isMenuOpen)}
-							className="light:bg-white border-neutral flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-[1px] px-2"
+							className="light:bg-white border-neutral flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border-[1px] px-2"
 							whileHover={{
 								scale: 1.1,
 							}}
@@ -128,9 +128,9 @@ const Header = () => {
 									transition={{ duration: 0.2 }}
 								>
 									{isMenuOpen ? (
-										<Cross1Icon height={20} width={20} />
+										<Cross1Icon height={15} width={15} />
 									) : (
-										<HamburgerMenuIcon height={20} width={20} />
+										<HamburgerMenuIcon height={15} width={15} />
 									)}
 								</motion.div>
 							</AnimatePresence>
@@ -142,38 +142,40 @@ const Header = () => {
 			{/* open menu */}
 			<AnimatePresence>
 				{isMenuOpen && (
-					<>
-						<motion.div
-							className="light:bg-white/90 dkar:bg-black/80 fixed inset-0 z-40 backdrop-blur-md"
-							initial="closed"
-							animate="open"
-							exit="closed"
-							variants={menuVariants}
-						>
-							<nav className="flex h-full items-center justify-center">
-								<ul className="space-y-8 text-center">
-									{menuItems.map((item, i) => (
-										<motion.li
-											key={item.name}
-											custom={i}
-											variants={menuItemVariants}
+					<motion.div
+						className="light:bg-white/90 fixed inset-0 z-40 backdrop-blur-md dark:bg-black/20"
+						initial="closed"
+						animate="open"
+						exit="closed"
+						variants={menuVariants}
+					>
+						<nav className="flex h-full flex-col items-center justify-center">
+							<ul className="space-y-8 text-center">
+								{menuItems.map((item, i) => (
+									<motion.li
+										key={item.name}
+										custom={i}
+										variants={menuItemVariants}
+									>
+										<motion.a
+											href={item.href}
+											className="10 text-4xl font-bold"
+											whileHover={{ opacity: 0.3 }}
 										>
-											<motion.a
-												href={item.href}
-												className="text-4xl font-thin"
-												whileHover={{ opacity: 0.3 }}
-											>
-												{item.name}
-											</motion.a>
-										</motion.li>
-									))}
-								</ul>
-								<div className="absolute bottom-4 right-4">
-									<ThemeToggle />
-								</div>
-							</nav>
-						</motion.div>
-					</>
+											{item.name}
+										</motion.a>
+									</motion.li>
+								))}
+							</ul>
+							{/* unlock pro */}
+
+							{/* theme toggle */}
+							{/* later just use theme toggle classname rathter than a div wrapper */}
+							<div className="absolute bottom-4 right-4">
+								<ThemeToggle />
+							</div>
+						</nav>
+					</motion.div>
 				)}
 			</AnimatePresence>
 		</>
@@ -181,10 +183,9 @@ const Header = () => {
 };
 
 const menuItems = [
-	{ name: "Projects", href: "#projects" },
-	{ name: "Studio", href: "#studio" },
-	{ name: "Process", href: "#process" },
-	{ name: "Contact", href: "#contact" },
+	{ name: "Contact", href: "/details/contact" },
+	{ name: "Pricing", href: "/details/pricing" },
+	{ name: "Get All Access", href: "/" },
 ];
 
 export default Header;

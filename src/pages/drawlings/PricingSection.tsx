@@ -51,9 +51,9 @@ function classNames(...classes: string[]) {
 	return classes.filter(Boolean).join(" ");
 }
 
-export default function Pricing() {
+export default function PricingSection() {
 	return (
-		<div className="relative isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
+		<div className="relative isolate px-6 py-24 sm:py-32 lg:px-8">
 			{/* background gradients */}
 			<div
 				aria-hidden="true"
@@ -69,12 +69,14 @@ export default function Pricing() {
 			</div>
 			{/* title bar */}
 			<div className="mx-auto max-w-4xl text-center">
-				<h2 className="text-base/7 font-semibold text-indigo-600">Pricing</h2>
-				<p className="mt-2 text-balance text-5xl font-semibold tracking-tight text-gray-900 sm:text-6xl">
+				<h2 className="light:text-indigo-900 text-base/7 font-semibold">
+					Pricing
+				</h2>
+				<p className="light:text-gray-900 mt-2 text-balance text-5xl font-semibold tracking-tight sm:text-6xl">
 					Drawlings 2D Drawings Access
 				</p>
 			</div>
-			<p className="mx-auto mt-6 max-w-2xl text-pretty text-center text-lg font-medium text-gray-600 sm:text-xl/8">
+			<p className="light:text-gray-600 light:text-gray-600 mx-auto mt-6 max-w-2xl text-pretty text-center text-lg font-medium dark:text-gray-400 sm:text-xl/8">
 				Start with 2D drawing access monthly, all xxx drawings for ...
 			</p>
 			{/* tiers - commented out is if there are two options*/}
@@ -86,19 +88,19 @@ export default function Pricing() {
 						className={classNames(
 							tier.featured
 								? "relative bg-gray-900 shadow-2xl"
-								: "bg-white/90 sm:mx-8 lg:mx-0",
-							tier.featured
-								? ""
-								: tierIdx === 0
-									? "rounded-3xl"
-									: "sm:rounded-t-none lg:rounded-bl-none lg:rounded-tr-3xl",
-							"rounded-3xl p-8 ring-1 ring-gray-700/10 sm:p-10"
+								: "light:bg-white/90 dark:bg-black/60 sm:mx-8 lg:mx-0",
+							// tier.featured
+							// 	? ""
+							// 	: tierIdx === 0
+							// 		? "rounded-3xl"
+							// 		: "sm:rounded-t-none lg:rounded-bl-none lg:rounded-tr-3xl",
+							"lightring-gray-700/10 rounded-3xl p-8 ring-1 ring-blue-900 sm:p-10"
 						)}
 					>
 						<h3
 							id={tier.id}
 							className={classNames(
-								tier.featured ? "text-indigo-400" : "text-indigo-600",
+								tier.featured ? "text-indigo-400" : "light:text-indigo-600",
 								"text-base/7 font-semibold"
 							)}
 						>
@@ -107,7 +109,7 @@ export default function Pricing() {
 						<p className="mt-4 flex items-baseline gap-x-2">
 							<span
 								className={classNames(
-									tier.featured ? "text-white" : "text-gray-900",
+									tier.featured ? "text-white" : "light:text-gray-900",
 									"text-5xl font-semibold tracking-tight"
 								)}
 							>
@@ -115,16 +117,16 @@ export default function Pricing() {
 							</span>
 							<span
 								className={classNames(
-									tier.featured ? "text-gray-400" : "text-gray-500",
+									tier.featured ? "text-gray-400" : "text-neutral-500",
 									"text-base"
 								)}
 							>
-								/monthly
+								/month
 							</span>
 						</p>
 						<p
 							className={classNames(
-								tier.featured ? "text-gray-300" : "text-gray-600",
+								tier.featured ? "text-gray-300" : "text-neutral-500",
 								"mt-6 text-base/7"
 							)}
 						>
@@ -134,7 +136,7 @@ export default function Pricing() {
 						<ul
 							role="list"
 							className={classNames(
-								tier.featured ? "text-gray-300" : "text-gray-600",
+								tier.featured ? "text-gray-300" : "text-neutral-500",
 								"mt-8 space-y-3 text-sm/6 sm:mt-10"
 							)}
 						>
@@ -143,7 +145,9 @@ export default function Pricing() {
 									<CheckIcon
 										aria-hidden="true"
 										className={classNames(
-											tier.featured ? "text-indigo-400" : "text-indigo-600",
+											tier.featured
+												? "text-indigo-400"
+												: "light:text-indigo-600 dark:text-white",
 											"h-6 w-5 flex-none"
 										)}
 									/>

@@ -16,7 +16,7 @@ const Footer = () => {
 					{/* <div>
 						<a
 							href="https://www.instagram.com/uwu_arc/"
-							className="transition-colors duration-200 hover:opacity-70"
+							className="trawnsition-colors duration-200 hover:opacity-70"
 							aria-label="Follow us on Instagram"
 						>
 							<InstagramLogoIcon height={40} width={40} />
