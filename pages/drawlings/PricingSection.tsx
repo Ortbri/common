@@ -1,55 +1,34 @@
 import { CheckIcon } from "@radix-ui/react-icons";
 
-// interface TiersInterface {
-// 	name: string;
-// 	id: string;
-// 	href: string;
-// 	priceMonthly: string;
-// 	description: string;
-// 	features: string[];
-// 	featured: boolean;
-// 	offer?: string;
-// }
+interface TiersInterface {
+	name: string;
+	id: string;
+	href: string;
+	priceMonthly: string;
+	description: string;
+	features: string[];
+	featured: boolean;
+	offer?: string;
+}
 
-// const tiers: TiersInterface[] = [
-// 	// {
-// 	// 	name: "Monthly",
-// 	// 	id: "tier-hobby",
-// 	// 	href: "#",
-// 	// 	priceMonthly: "$5",
-// 	// 	description:
-// 	// 		"The perfect plan if you're just getting started with our product.",
-// 	// 	features: [
-// 	// 		"25 products",
-// 	// 		"Up to 10,000 subscribers",
-// 	// 		"Advanced analytics",
-// 	// 		"24-hour support response time",
-// 	// 	],
-// 	// 	featured: false,
-// 	// },
-// 	{
-// 		name: "Monthly",
-// 		id: "tier-enterprise",
-// 		href: "#",
-// 		featured: false, // if have two values change later
-// 		priceMonthly: "$5",
-// 		description: "Dedicated support and infrastructure for your company.",
-// 		features: [
-// 			"Unlimited products",
-// 			"Unlimited subscribers",
-// 			"Advanced analytics",
-// 			"Dedicated support representative",
-// 			"Marketing automations",
-// 			"Custom integrations",
-// 		],
-// 		// featured: true,
-// 		offer: "save this amount!",
-// 	},
-// ];
+const tier: TiersInterface = {
+	name: "Monthly",
+	id: "tier-enterprise",
+	href: "#",
+	featured: false,
+	priceMonthly: "$4",
+	description: "Dedicated support and infrastructure for your company.",
+	features: [
+		"Unlimited products",
+		"Unlimited subscribers", 
+		"Advanced analytics",
+		"Dedicated support representative",
+		"Marketing automations",
+		"Custom integrations",
+	],
+	offer: "save this amount!",
+};
 
-// function classNames(...classes: string[]) {
-// 	return classes.filter(Boolean).join(" ");
-// }
 
 export default function PricingSection() {
 	return (
@@ -79,98 +58,46 @@ export default function PricingSection() {
 			<p className="light:text-gray-600 light:text-gray-600 mx-auto mt-6 max-w-2xl text-pretty text-center text-lg font-medium dark:text-gray-400 sm:text-xl/8">
 				Start with 2D drawing access monthly, all xxx drawings for ...
 			</p>
-			{/* tiers - commented out is if there are two options*/}
-			{/* <div className="mx-auto mt-16 grid max-w-lg grid-cols-1 items-center gap-y-6 sm:mt-20 sm:gap-y-0 lg:max-w-4xl lg:grid-cols-2"> */}
 			<div className="mx-auto mt-16 grid max-w-lg items-center gap-y-6 sm:mt-20 sm:gap-y-0 lg:max-w-xl">
-				{/* {tiers.map((tier, tierIdx) => ( */}
-					<div
-					// key={tier.id}
-					className={
-						// tier.featured
-						// 	? "relative bg-gray-900 shadow-2xl"
-						// 	: "light:bg-white/90 dark:bg-black/60 sm:mx-8 lg:mx-0",
-						// tier.featured
-						// 	? ""
-						// 	: tierIdx === 0
-						// 		? "rounded-3xl"
-						// 		: "sm:rounded-t-none lg:rounded-bl-none lg:rounded-tr-3xl",
-						"lightring-gray-700/10 rounded-3xl p-8 ring-1 ring-blue-900 sm:p-10"
-						// )}
-					}
+				<div
+					key={tier.id}
+					className="light:bg-white/90 dark:bg-black/60 rounded-3xl p-8 ring-1 ring-blue-900 sm:p-10"
+				>
+					<h3
+						id={tier.id}
+						className="light:text-indigo-600 text-base/7 font-semibold"
 					>
-						<h3
-							// id={tier.id}
-							className={
-								// tier.featured ? "text-indigo-400" : "light:text-indigo-600",
-								"text-base/7 font-semibold"
-							}
-						>
-						{/* {tier.name} */}
-						tier name
-						</h3>
-						<p className="mt-4 flex items-baseline gap-x-2">
-							<span
-								className={
-
-									"text-5xl font-semibold tracking-tight"
-								}
-						>
-							monthly
-							</span>
-							<span
-								className={
-								
-									"text-base"
-								}
-							>
-								/month
-							</span>
-						</p>
-						<p
-							className={
-								
-								"mt-6 text-base/7"
-							}
-						>
-description
-						</p>
-						{/* mapped of features */}
-						<ul
-							role="list"
-							className={
-							
-								"mt-8 space-y-3 text-sm/6 sm:mt-10"
-							}
-						>
-
-								{/* <li key={feature} className="flex gap-x-3">
-									<CheckIcon
-										aria-hidden="true"
-										className={classNames(
-											tier.featured
-												? "text-indigo-400"
-												: "light:text-indigo-600 dark:text-white",
-											"h-6 w-5 flex-none"
-										)}
-									/>
-									{feature}
-								</li> */}
-						</ul>
-						<a
-							// href={tier.href}
-							// aria-describedby={tier.id}
-							className={
-								"mt-8 block rounded-3xl bg-indigo-500 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 sm:mt-10"
-								// tier.featured
-								// ? "bg-indigo-500 text-white shadow-sm hover:bg-indigo-400 focus-visible:outline-indigo-500"
-								// : "text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300 focus-visible:outline-indigo-600",
-								// "mt-8 block rounded-md px-3.5 py-2.5 text-center text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 sm:mt-10"
-							}
-						>
-							Get started today
-						</a>
-					</div>
-
+						{tier.name}
+					</h3>
+					<p className="mt-4 flex items-baseline gap-x-2">
+						<span className="text-5xl font-semibold tracking-tight">
+							{tier.priceMonthly}
+						</span>
+						<span className="text-base">/month</span>
+					</p>
+					<p className="mt-6 text-base/7">{tier.description}</p>
+					<ul
+						role="list"
+						className="mt-8 space-y-3 text-sm/6 sm:mt-10"
+					>
+						{tier.features.map((feature) => (
+							<li key={feature} className="flex gap-x-3">
+								<CheckIcon
+									aria-hidden="true"
+									className="light:text-indigo-600 dark:text-white h-6 w-5 flex-none"
+								/>
+								{feature}
+							</li>
+						))}
+					</ul>
+					<a
+						href={tier.href}
+						aria-describedby={tier.id}
+						className="mt-8 block rounded-3xl bg-indigo-500 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 sm:mt-10"
+					>
+						Get started today
+					</a>
+				</div>
 			</div>
 		</div>
 	);
