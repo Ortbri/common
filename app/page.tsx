@@ -1,5 +1,4 @@
-import { ThemeToggle } from "../components/themeToggle";
-import { logout } from "./logout/actions";
+import { logout } from "./(auth)/logout/actions";
 
 export default function Home() {
 	return (
