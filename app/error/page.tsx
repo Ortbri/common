@@ -18,7 +18,7 @@ export default function ErrorPage() {
           >
             Go back home
           </Link>
-          <Link href="/support" className="text-sm font-semibold text-foreground">
+          <Link href="/details/contact" className="text-sm font-semibold text-foreground">
             Contact support <span aria-hidden="true">&rarr;</span>
           </Link>
         </div>
