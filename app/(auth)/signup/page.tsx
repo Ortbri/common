@@ -1,10 +1,10 @@
-import Image from "next/image"
-import Link from "next/link"
-import { Button } from "../../../components/ui/button"
-import { Input } from "../../../components/ui/input"
-import { Label } from "../../../components/ui/label"
-import { cn } from "../../../lib/utils"
-import ghost from "../../../public/ghost.png"
+import Image from 'next/image';
+import Link from 'next/link';
+import { Button } from '../../../components/ui/button';
+import { Input } from '../../../components/ui/input';
+import { Label } from '../../../components/ui/label';
+import { cn } from '../../../lib/utils';
+import ghost from '../../../public/ghost.png';
 
 export default function SignupPage() {
   return (
@@ -30,12 +30,12 @@ export default function SignupPage() {
         <div className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale" />
       </div>
     </div>
-  )
+  );
 }
 
 function SignupForm() {
   return (
-    <form className={cn("flex flex-col gap-6")} action="/api/auth/signup">
+    <form className={cn('flex flex-col gap-6')} action="/api/auth/signup">
       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-bold">Create an account</h1>
         <p className="text-balance text-sm text-muted-foreground">
@@ -45,40 +45,26 @@ function SignupForm() {
       <div className="grid gap-6">
         <div className="grid gap-2">
           <Label htmlFor="fullName">Full name</Label>
-          <Input
-            name="fullName"
-            type="text"
-            placeholder="Daniel Lim"
-            required
-          />
+          <Input name="fullName" type="text" placeholder="Daniel Lim" required />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="email">Email</Label>
-          <Input
-            name="email"
-            type="email"
-            placeholder="m@example.com"
-            required
-          />
+          <Input name="email" type="email" placeholder="m@example.com" required />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="password">Password</Label>
-          <Input
-            name="password"
-            type="password"
-            required
-          />
+          <Input name="password" type="password" required />
         </div>
         <Button type="submit" className="w-full">
           Create account
         </Button>
       </div>
       <div className="text-center text-sm">
-        Already have an account?{" "}
+        Already have an account?{' '}
         <Link href="/auth/login" className="underline underline-offset-4">
           Sign in
         </Link>
       </div>
     </form>
-  )
-} 
+  );
+}

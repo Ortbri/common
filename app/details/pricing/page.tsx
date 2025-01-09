@@ -1,8 +1,8 @@
-import PricingSection from "../../../pages/drawlings/PricingSection";
-import React from "react";
+import PricingSection from '../../../pages/drawlings/PricingSection';
+import React from 'react';
 
 function Pricing() {
-	return <PricingSection />;
+  return <PricingSection />;
 }
 
 export default Pricing;

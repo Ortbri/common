@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 
 function Testing() {
-	return <div>{/* <Pricing /> */}</div>;
+  return <div>{/* <Pricing /> */}</div>;
 }
 
 export default Testing;
