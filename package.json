@@ -15,7 +15,9 @@
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
     "validate": "bun run lint && bun run format:check && bun run type-check",
     "clean": "rm -rf .next && rm -rf node_modules/.cache",
-    "db:types": "bun run gen:types && bun run format"
+    "db:types": "bun run gen:types && bun run format",
+    "precommit": "bun run lint-staged",
+    "prepush": "bun run validate"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
