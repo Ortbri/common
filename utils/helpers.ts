@@ -19,9 +19,10 @@ export const getErrorRedirect = (error: string, path: string = '/') => {
   return `${path}?error=${encodeURIComponent(error)}`;
 };
 
-export const calculateTrialEndUnixTimestamp = (trialPeriodDays?: number | null) => {
-  if (!trialPeriodDays) return undefined;
-  const now = new Date();
-  const trialEnd = new Date(now.getTime() + trialPeriodDays * 24 * 60 * 60 * 1000);
-  return Math.floor(trialEnd.getTime() / 1000);
-};
+// There is no trial
+// export const calculateTrialEndUnixTimestamp = (trialPeriodDays?: number | null) => {
+//   if (!trialPeriodDays) return undefined;
+//   const now = new Date();
+//   const trialEnd = new Date(now.getTime() + trialPeriodDays * 24 * 60 * 60 * 1000);
+//   return Math.floor(trialEnd.getTime() / 1000);
+// };
