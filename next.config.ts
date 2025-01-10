@@ -1,9 +1,8 @@
-import type { NextConfig } from 'next';
 import withBundleAnalyzer from '@next/bundle-analyzer';
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
   poweredByHeader: false,
   compress: true,
   images: {
@@ -56,7 +55,6 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizeCss: true, // Enable CSS optimization
     scrollRestoration: true, // Enable scroll restoration
-    typedRoutes: true, // Enable typed routes
   },
   // Webpack configuration for optimization
   webpack: config => {
