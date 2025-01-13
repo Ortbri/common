@@ -1,5 +1,4 @@
-'use client';
-import { Asterisk, Divide } from 'lucide-react';
+import { Asterisk } from 'lucide-react';
 import Link from 'next/link';
 import { ThemeToggle } from './themeToggle';
 import { Button } from './ui/button';
@@ -11,8 +10,8 @@ const Header = () => {
         <div className="mx-auto flex items-center gap-12 px-4 py-2">
           {/* Logo placeholder */}
           <Link href={'/'}>
-            <button className="hover: flex items-center gap-1">
-              <Divide className="h-5 w-5" strokeWidth={3} />
+            <button className="hover: flex items-center">
+              <Asterisk className="h-5 w-5" strokeWidth={2} />
               <h1 className="font-semibold">COMMON</h1>
             </button>
           </Link>
