@@ -51,20 +51,20 @@ const nextConfig: NextConfig = {
       ],
     },
   ],
-  // Enable experimental features (optional)
+  // Modified experimental features
   experimental: {
-    optimizeCss: true, // Enable CSS optimization
-    scrollRestoration: true, // Enable scroll restoration
+    // Remove optimizeCss as it might be causing issues
+    scrollRestoration: true,
   },
+  // Add output configuration
+  output: 'standalone',
   // Webpack configuration for optimization
   webpack: config => {
-    // Optimize packages with multiple versions
     config.optimization.moduleIds = 'deterministic';
     return config;
   },
 };
 
-// Analyze bundle size in production build
 const withBundleAnalyzerWrapper = withBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 });
