@@ -1,16 +1,17 @@
 'use client';
 import { Asterisk, Divide } from 'lucide-react';
 import Link from 'next/link';
+import { ThemeToggle } from './themeToggle';
 import { Button } from './ui/button';
 
 const Header = () => {
   return (
     <>
-      <header className={`fixed left-0 right-0 top-0 z-50 bg-background`}>
-        <div className="mx-auto flex items-center gap-12 p-4">
+      <header className={`fixed left-0 right-0 top-0 z-50 bg-background/25 backdrop-blur-md`}>
+        <div className="mx-auto flex items-center gap-12 px-4 py-2">
           {/* Logo placeholder */}
           <Link href={'/'}>
-            <button className="hover: flex items-center gap-2">
+            <button className="hover: flex items-center gap-1">
               <Divide className="h-5 w-5" strokeWidth={3} />
               <h1 className="font-semibold">COMMON</h1>
             </button>
@@ -33,12 +34,13 @@ const Header = () => {
           </div>
           {/* right buttons --- CONDITIONAL BASED ON IF YOU HAVE A ACCOUNT */}
           <div className="flex flex-row gap-2">
+            <ThemeToggle />
             <Button size={'sm'} className="" variant={'outline'}>
               Log in
             </Button>
-            <Button size={'sm'} className="gap-1">
+            <Button size={'sm'} className="gap-1 pr-2">
               Get all-access
-              <Asterisk strokeWidth={2} />
+              <Asterisk strokeWidth={2} className="" />
             </Button>
           </div>
         </div>
@@ -50,8 +52,8 @@ const Header = () => {
 };
 
 const menuItems = [
-  { name: 'Browse', href: '/details/pricing' },
   { name: 'About', href: '/details/about' },
+  { name: 'Browse', href: '/details/pricing' },
   {
     name: 'Pricing',
     href: '/',
