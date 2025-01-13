@@ -1,10 +1,8 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '../../../components/ui/button';
 import { Input } from '../../../components/ui/input';
 import { Label } from '../../../components/ui/label';
 import { cn } from '../../../lib/utils';
-import ghost from '../../../public/ghost.png';
 
 export default function LoginPage() {
   return (
@@ -13,7 +11,7 @@ export default function LoginPage() {
         <div className="flex justify-center gap-2 md:justify-start">
           <Link href="/" className="flex items-center gap-2 font-medium">
             <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary text-primary-foreground">
-              <Image src={ghost} alt="ghost logo" />
+              {/* images was here */}
             </div>
             <div>
               <span>Drawlings Studio</span>
