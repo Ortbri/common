@@ -1,10 +1,8 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '../../../components/ui/button';
 import { Input } from '../../../components/ui/input';
 import { Label } from '../../../components/ui/label';
 import { cn } from '../../../lib/utils';
-import ghost from '../../../public/ghost.png';
 
 export default function SignupPage() {
   return (
@@ -12,9 +10,7 @@ export default function SignupPage() {
       <div className="flex flex-col gap-4 p-6 md:p-10">
         <div className="flex justify-center gap-2 md:justify-start">
           <Link href="/" className="flex items-center gap-2 font-medium">
-            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary text-primary-foreground">
-              <Image src={ghost} alt="ghost logo" />
-            </div>
+            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary text-primary-foreground"></div>
             <div>
               <span>Drawlings Studio</span>
             </div>
