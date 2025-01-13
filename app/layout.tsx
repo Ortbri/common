@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { Toaster } from 'sonner';
+import { CommandMenuProvider } from '../components/command-menu';
 import Footer from '../components/footer';
 import Header from '../components/header';
 import { TooltipProvider } from '../components/ui/tooltip';
@@ -31,10 +32,12 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider>
-          <Header />
-          <TooltipProvider>{children}</TooltipProvider>
-          <Toaster />
-          <Footer />
+          <CommandMenuProvider>
+            <Header />
+            <TooltipProvider>{children}</TooltipProvider>
+            <Toaster />
+            <Footer />
+          </CommandMenuProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -11,7 +11,7 @@ const Header = () => {
           {/* Logo placeholder */}
           <Link href={'/'}>
             <button className="hover: flex items-center">
-              <Asterisk className="h-5 w-5" strokeWidth={2} />
+              <Asterisk className="h-5 w-5" strokeWidth={3} />
               <h1 className="font-semibold">COMMON</h1>
             </button>
           </Link>
