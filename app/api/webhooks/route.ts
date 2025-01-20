@@ -1,6 +1,6 @@
 import type Stripe from 'stripe';
 import { stripe } from '../../../utils/stripe/config';
-import { manageSubscriptionStatusChange } from '../../../utils/supabase/admin';
+// import { manageSubscriptionStatusChange } from '../../../utils/supabase/admin';
 
 const relevantEvents = new Set([
   'checkout.session.completed',
@@ -34,11 +34,12 @@ export async function POST(req: Request) {
         case 'customer.subscription.deleted':
           {
             const subscription = event.data.object as Stripe.Subscription;
-            await manageSubscriptionStatusChange(
-              subscription.id,
-              subscription.customer as string,
-              event.type === 'customer.subscription.created'
-            );
+            console.log(JSON.stringify(subscription, null, 2));
+            // await manageSubscriptionStatusChange(
+            //   subscription.id,
+            //   subscription.customer as string,
+            //   event.type === 'customer.subscription.created'
+            // );
           }
           break;
         case 'checkout.session.completed':
@@ -46,11 +47,12 @@ export async function POST(req: Request) {
             const checkoutSession = event.data.object as Stripe.Checkout.Session;
             if (checkoutSession.mode === 'subscription') {
               const subscriptionId = checkoutSession.subscription;
-              await manageSubscriptionStatusChange(
-                subscriptionId as string,
-                checkoutSession.customer as string,
-                true
-              );
+              console.log(JSON.stringify(subscriptionId, null, 2));
+              //   await manageSubscriptionStatusChange(
+              //     subscriptionId as string,
+              //     checkoutSession.customer as string,
+              //     true
+              //   );
             }
           }
           break;
