@@ -1,5 +1,4 @@
-import { CheckIcon } from '@radix-ui/react-icons';
-import { Asterisk } from 'lucide-react';
+import { Asterisk, Check } from 'lucide-react';
 import { Button } from '../../../components/ui/button';
 
 interface TiersInterface {
@@ -69,7 +68,7 @@ function Pricing() {
           <ol className="mt-8 space-y-3 text-sm/6 sm:mt-10">
             {tier.features.map(feature => (
               <li key={feature} className="flex gap-x-3">
-                <CheckIcon
+                <Check
                   aria-hidden="true"
                   className="light:text-indigo-600 h-6 w-5 flex-none dark:text-white"
                 />
