@@ -24,7 +24,8 @@ export const getURL = (path: string) => {
   return path ? `${url}/${path}` : url;
 };
 
-export const postData = async ({ url, data }: { url: string; data?: { price: Price } }) => {
+// price is unknown for now
+export const postData = async ({ url, data }: { url: string; data?: { price: unknown } }) => {
   const res = await fetch(url, {
     method: 'POST',
     headers: new Headers({ 'Content-Type': 'application/json' }),
