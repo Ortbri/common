@@ -3,10 +3,10 @@
 import { AvatarImage } from '@radix-ui/react-avatar';
 import { Asterisk, Download, Search } from 'lucide-react';
 import Image from 'next/image';
-import { useCommandMenuContext } from '../components/command-menu';
-import { Avatar, AvatarFallback } from '../components/ui/avatar';
-import { Button } from '../components/ui/button';
-import { Input } from '../components/ui/input';
+import { useCommandMenuContext } from '../../components/command-menu';
+import { Avatar, AvatarFallback } from '../../components/ui/avatar';
+import { Button } from '../../components/ui/button';
+import { Input } from '../../components/ui/input';
 
 export default function Home() {
   return (

@@ -2,8 +2,6 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { Toaster } from 'sonner';
 import { CommandMenuProvider } from '../components/command-menu';
-import Footer from '../components/footer';
-import Header from '../components/header';
 import { TooltipProvider } from '../components/ui/tooltip';
 import { ThemeProvider } from '../provider/theme-provider';
 import './globals.css';
@@ -19,8 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Drawlings',
-  description: '2D design drawings for architecture students',
+  title: 'Common Project',
+  description: 'Access 500+ 2D Designs',
 };
 
 export default function RootLayout({
@@ -33,10 +31,8 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider>
           <CommandMenuProvider>
-            <Header />
             <TooltipProvider>{children}</TooltipProvider>
             <Toaster />
-            <Footer />
           </CommandMenuProvider>
         </ThemeProvider>
       </body>
