@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation';
+import AccountForm from '../../components/account-form';
 import { createClient } from '../../utils/supabase/server';
 
 /**
@@ -13,9 +14,10 @@ export default async function PrivatePage() {
   const supabase = await createClient();
 
   const { data, error } = await supabase.auth.getUser();
+  console.log('data', JSON.stringify(data, null, 2));
   if (error || !data?.user) {
     redirect('/');
   }
 
-  return <p>Hello {data.user.email}</p>;
+  return <AccountForm user={data.user} />;
 }

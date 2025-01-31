@@ -1,5 +1,4 @@
-import Footer from '../../components/footer';
-import Header from '../../components/header';
+import React from 'react';
 
 export default function MarketingLayout({
   children,
@@ -8,9 +7,9 @@ export default function MarketingLayout({
 }>) {
   return (
     <div>
-      <Header />
+      {/* <MarketingHeader /> */}
       {children}
-      <Footer />
+      {/* <MarketingFooter /> */}
     </div>
   );
 }

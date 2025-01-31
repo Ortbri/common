@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: 'Common Project',
-  description: 'Access 500+ 2D Designs',
+  description: 'Featuring 500+ 2D Dimensions',
 };
 
 export default function RootLayout({

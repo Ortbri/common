@@ -1,8 +1,8 @@
 import { Asterisk } from 'lucide-react';
 import Link from 'next/link';
-import { Separator } from './ui/separator';
+import { Separator } from '../../components/ui/separator';
 
-const Footer = () => {
+const MarketingFooter = () => {
   return (
     <footer className="flex flex-col gap-5 p-10">
       <CompanyInfo />
@@ -12,9 +12,11 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default MarketingFooter;
 
 /* ------------------------------ comapny info ------------------------------ */
+
+// TODO: constant Links
 const menuItems = [
   { name: 'About', href: '/details/about' },
   { name: 'Browse', href: '/details/pricing' },

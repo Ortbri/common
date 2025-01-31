@@ -1,59 +1,23 @@
 import Link from 'next/link';
-import { Button } from '../../../components/ui/button';
-import { Input } from '../../../components/ui/input';
-import { Label } from '../../../components/ui/label';
-import { cn } from '../../../lib/utils';
+import { LoginForm } from '../../../components/forms/login';
 
 export default function LoginPage() {
   return (
-    <div className="grid min-h-svh pt-12 lg:grid-cols-2">
-      <div className="flex flex-col gap-4 p-6 md:p-10">
-        <div className="flex flex-1 items-center justify-center">
-          <div className="w-full max-w-xs">
-            <LoginForm />
-          </div>
-        </div>
-      </div>
-      <div className="relative hidden bg-primary lg:block">
-        <div className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale" />
-      </div>
-    </div>
-  );
-}
-
-function LoginForm() {
-  return (
-    <form className={cn('flex flex-col gap-6')} action="/api/auth/login">
+    <div className="flex flex-col space-y-8">
       <div className="flex flex-col items-center gap-2 text-center">
-        <h1 className="text-2xl font-bold">Welcome back</h1>
+        <h1 className="text-2xl font-bold">Login</h1>
         <p className="text-balance text-sm text-muted-foreground">
-          Enter your email to sign in to your account
+          Enter your email and password to Login
         </p>
       </div>
-      <div className="grid gap-6">
-        <div className="grid gap-2">
-          <Label htmlFor="email">Email</Label>
-          <Input name="email" type="email" placeholder="m@example.com" required />
-        </div>
-        <div className="grid gap-2">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="password">Password</Label>
-            <Link href="/forgot-password" className="text-sm text-muted-foreground hover:underline">
-              Forgot password?
-            </Link>
-          </div>
-          <Input name="password" type="password" required />
-        </div>
-        <Button type="submit" className="w-full">
-          Sign in
-        </Button>
-      </div>
-      <div className="text-center text-sm">
+      <LoginForm />
+      <p className="text-balance text-center text-sm text-muted-foreground">
         Don&apos;t have an account?{' '}
-        <Link href="/signup" className="underline underline-offset-4">
+        <Link href="/signup" className="text-foreground underline underline-offset-4">
           Sign up
         </Link>
-      </div>
-    </form>
+        {/* <span onClick={()}>testing</span> */}
+      </p>
+    </div>
   );
 }

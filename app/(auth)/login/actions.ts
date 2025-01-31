@@ -1,17 +1,19 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
+// import { toast } from 'sonner';
+
+// import { createClient } from '@/utils/supabase/server';
 import { createClient } from '../../../utils/supabase/server';
 
-/* -------------------------------------------------------------------------- */
-/*                                 login func                                 */
-/* -------------------------------------------------------------------------- */
-export async function login(formData: FormData) {
+export type AuthResponse = {
+  error: string | null;
+  success?: boolean;
+};
+
+export async function login(formData: FormData): Promise<AuthResponse> {
   const supabase = await createClient();
 
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
   const data = {
     email: formData.get('email') as string,
     password: formData.get('password') as string,
@@ -20,10 +22,30 @@ export async function login(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword(data);
 
   if (error) {
-    // redirect('/error');
-    console.warn('error here');
+    return { error: error.message };
   }
 
+  // Return success before redirect
   revalidatePath('/', 'layout');
-  redirect('/');
+  return { error: null, success: true };
 }
+
+// export async function login(formData: FormData) {
+//   const supabase = await createClient();
+
+//   // type-casting here for convenience
+//   // in practice, you should validate your inputs
+//   const data = {
+//     email: formData.get('email') as string,
+//     password: formData.get('password') as string,
+//   };
+
+//   const { error } = await supabase.auth.signInWithPassword(data);
+
+//   if (error) {
+//     redirect('/error');
+//   }
+
+//   revalidatePath('/', 'layout');
+//   redirect('/account');
+// }

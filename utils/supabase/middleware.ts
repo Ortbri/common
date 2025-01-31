@@ -42,13 +42,16 @@ export async function updateSession(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
-  // MY USAGE
-  if (user) {
-    const url = request.nextUrl.clone();
-    url.pathname = '/browse';
-    return NextResponse.redirect(url);
+  // console.log('from middlware', JSON.stringify(user, null, 2));
+  if (!user) {
+    console.log('user is null');
   }
+  // MY USAGE
+  // if (user) {
+  //   const url = request.nextUrl.clone();
+  //   url.pathname = '/private';
+  //   return NextResponse.redirect(url);
+  // }
 
   // FROM EXAMPLE
   // if (
