@@ -12,7 +12,7 @@ export default function SignupPage() {
       </div>
       <SignUpForm />
       <div className="text-balance text-center text-sm text-muted-foreground">
-        Alreadzy have an account?{' '}
+        Already have an account?{' '}
         <Link href="/login" className="text-foreground underline underline-offset-4">
           Log in
         </Link>

@@ -1,6 +1,8 @@
 'use client';
 
-import { EmailNotificationForm } from '../../components/forms/email-notification';
+import { Asterisk } from 'lucide-react';
+import Link from 'next/link';
+import { Button } from '../../components/ui/button';
 
 export default function Home() {
   return (
@@ -30,10 +32,10 @@ function HomeCTA() {
           Featuring 500+ Essential 2D Designs | Instant Search | Drag and Drop | New Content
           Monthly.
         </p>
-        <EmailNotificationForm />
+        {/* <EmailNotificationForm /> */}
 
         {/* search and CTA button */}
-        {/* <div className="flex w-full max-w-lg flex-1 items-center justify-center gap-2">
+        <div className="flex w-full max-w-lg flex-1 items-center justify-center gap-2">
           <Link href={'/signup'}>
             <Button className="gap-1 whitespace-nowrap rounded-3xl" size={'sm'}>
               Join for Free
@@ -47,12 +49,11 @@ function HomeCTA() {
             >
               See Pricing
               <div className="rounded-full bg-card-foreground p-[2px]">
-
                 <Asterisk strokeWidth={3} className="p-[2px]" color="white" />
               </div>
             </Button>
           </Link>
-        </div> */}
+        </div>
         {/*  input form */}
         {/* submit form */}
 

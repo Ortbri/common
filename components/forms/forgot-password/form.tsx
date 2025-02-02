@@ -31,7 +31,7 @@ export default function ForgotPasswordForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="m@gmail.com" type="email" {...field} />
+                <Input placeholder="daniella@gmail.com" type="email" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
