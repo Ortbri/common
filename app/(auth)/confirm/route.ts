@@ -4,6 +4,11 @@ import type { NextRequest } from 'next/server';
 import { redirect } from 'next/navigation';
 import { createClient } from '../../../utils/supabase/server';
 
+/**
+ * not really happy about this confirm, takes too long for email so i disabled the
+ * need for confirm email for now
+ */
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const token_hash = searchParams.get('token_hash');

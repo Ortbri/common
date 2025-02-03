@@ -1,20 +1,21 @@
 'use client';
 
-// import { login } from '@/server-actions/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
-// import { useRouter } from 'next/navigation';
+import { Eye, EyeOff } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
-import { login } from '../../../app/(auth)/login/actions';
+import { loginAction } from '../../../app/(auth)/login/actions';
 import { Button } from '../../ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../ui/form';
 import { Input } from '../../ui/input';
 import { LoginSchema } from './schema';
 
 export default function LoginForm() {
-  // const router = useRouter();
-
+  const router = useRouter();
+  const [showPassword, setShowPassword] = useState<boolean>();
   /* ------------------------------- hook forms ------------------------------- */
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -28,22 +29,26 @@ export default function LoginForm() {
 
   /* ------------------------------- handle form ------------------------------ */
   const onSubmit = async (data: z.infer<typeof LoginSchema>) => {
-    const formData = new FormData();
-    formData.append('email', data.email);
-    formData.append('password', data.password);
+    try {
+      const response = await loginAction(data);
 
-    const response = await login(formData);
-
-    if (response.error) {
-      toast.error(response.error);
-      return;
-    }
-
-    if (response.success) {
-      toast.success('Successfully logged in!');
-      // setTimeout(() => {
-      //   router.push('/account');
-      // }, 500);
+      // Only handle errors since success = redirect
+      if (response.data?.error) {
+        console.log(response.data.error);
+        form.setError('password', {
+          message: response.data.error,
+        });
+      }
+      if (response.data?.redirect) {
+        toast.success('Logged in!', {
+          description: 'Welcome back!',
+          duration: 10000,
+        });
+        router.push(response.data.redirect);
+      }
+    } catch (error) {
+      const unknownError = error instanceof Error ? error.message : 'unknown error';
+      toast.error('Something went wrong. Please try again.' + unknownError);
     }
   };
 
@@ -76,8 +81,33 @@ export default function LoginForm() {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input placeholder="********" type="password" disabled={isSubmitting} {...field} />
+                <div className="relative">
+                  <Input
+                    placeholder="********"
+                    type={showPassword ? 'text' : 'password'}
+                    {...field}
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4 text-gray-500" />
+                    ) : (
+                      <Eye className="h-4 w-4 text-gray-500" />
+                    )}
+                    <span className="sr-only">
+                      {showPassword ? 'Hide password' : 'Show password'}
+                    </span>
+                  </Button>
+                </div>
+
+                {/* state for viewing */}
               </FormControl>
+
               <FormMessage />
             </FormItem>
           )}
