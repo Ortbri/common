@@ -1,10 +1,9 @@
 import { z } from 'zod'; // Add new import
 
 export const SignUpSchema = z.object({
-  firstName: z.string(),
-  lastName: z.string(),
+  first_name: z.string(),
+  last_name: z.string(),
   email: z.string().email(),
-  // what type of user: "Education", "Professional", "Company"
   password: z
     .string()
     .min(8, { message: 'Password is too short' })

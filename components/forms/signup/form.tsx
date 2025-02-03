@@ -2,31 +2,74 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Eye, EyeOff } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
+import { signupAction } from '../../../app/(auth)/signup/actions';
 import { Button } from '../../ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../ui/form';
 import { Input } from '../../ui/input';
 import { SignUpSchema } from './schema';
 
 export default function SignUpForm() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState<boolean>();
+
   /* ------------------------------- hook forms ------------------------------- */
   const form = useForm<z.infer<typeof SignUpSchema>>({
     resolver: zodResolver(SignUpSchema),
     defaultValues: {
-      firstName: '',
-      lastName: '',
+      first_name: '',
+      last_name: '',
       email: '',
       password: '',
     },
   });
+  const {
+    formState: { isSubmitting },
+  } = form;
 
   /* ------------------------------- handle form ------------------------------ */
-  const onSubmit = (data: z.infer<typeof SignUpSchema>) => {
-    // TODO: handle data
-    console.log(data);
+  const onSubmit = async (data: z.infer<typeof SignUpSchema>) => {
+    try {
+      const result = await signupAction(data);
+
+      // Check for any server error first
+      if (result.serverError) {
+        form.setError('root', {
+          message: result.serverError,
+        });
+        return;
+      }
+
+      // you can also handle validation errors
+
+      // Handle the error case if there's an error inside result.data
+      if (result.data?.error) {
+        form.setError('root', {
+          message: result.data.error,
+        });
+        return;
+      }
+
+      // If a redirect URL is provided, perform the redirect
+      if (result.data?.redirectTo) {
+        // If everything goes fine, show the success toast
+        toast.success('Success!', {
+          description: 'You created your account!',
+          duration: 10000,
+        });
+        router.push(result.data.redirectTo); // Redirect to the path
+        return;
+      }
+    } catch (error) {
+      console.error(error);
+      form.setError('root', {
+        message: 'An unexpected error occurred',
+      });
+    }
   };
 
   /* --------------------------------- return --------------------------------- */
@@ -35,12 +78,12 @@ export default function SignUpForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
-          name="firstName"
+          name="first_name"
           render={({ field }) => (
             <FormItem>
               <FormLabel>First Name</FormLabel>
               <FormControl>
-                <Input placeholder="Daniella" type="email" {...field} />
+                <Input placeholder="Daniella" type="text" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -48,12 +91,12 @@ export default function SignUpForm() {
         />
         <FormField
           control={form.control}
-          name="lastName"
+          name="last_name"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Last Name</FormLabel>
               <FormControl>
-                <Input placeholder="Lim" type="email" {...field} />
+                <Input placeholder="Lim" type="text" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -105,14 +148,13 @@ export default function SignUpForm() {
 
                 {/* state for viewing */}
               </FormControl>
-
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <Button className="w-full" type="submit">
-          Sign Up
+        <Button className="w-full" type="submit" disabled={isSubmitting}>
+          {isSubmitting ? 'Signing up...' : 'Sign up'}
         </Button>
       </form>
     </Form>

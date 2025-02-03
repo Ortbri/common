@@ -1,36 +1,75 @@
 'use server';
 
-import { revalidatePath } from 'next/dist/server/web/spec-extension/revalidate';
-import { redirect } from 'next/navigation';
+import { revalidatePath } from 'next/cache';
+import { SignUpSchema } from '../../../components/forms/signup/schema';
+import { safeAction } from '../../../utils/safe-action';
 import { createClient } from '../../../utils/supabase/server';
 
-export async function signup(formData: FormData) {
-  const supabase = await createClient();
+export const signupAction = safeAction(
+  SignUpSchema,
+  async ({ first_name, last_name, email, password }) => {
+    const supabase = await createClient();
 
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
-  const data = {
-    email: formData.get('email') as string,
-    password: formData.get('password') as string,
-  };
+    // Sign up the user
+    const { error: signupError } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          first_name,
+          last_name,
+        },
+      },
+    });
 
-  const { error, data: authData } = await supabase.auth.signUp(data);
+    if (signupError) {
+      return { error: signupError.message || 'Error signing up' }; // Return signup error
+    }
 
-  if (error) {
-    return { error: error ? error.message : 'Error not typed' };
+    // Immediately log the user in
+    const { error: loginError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (loginError) {
+      return { error: loginError.message || 'Error logging in' }; // Return login error
+    }
+
+    revalidatePath('/', 'layout'); // Refresh cache if necessary
+
+    // Return the session and redirect URL
+    return { redirectTo: '/browse' };
   }
-  // create stripe customer?
+);
 
-  if (authData.user?.identities?.length === 0) {
-    return {
-      error: null,
-      needsEmailVerification: true,
-    };
-  }
+// export async function signup(formData: FormData) {
+//   const supabase = await createClient();
 
-  revalidatePath('/', 'layout');
-  redirect('/');
-}
+//   // type-casting here for convenience
+//   // in practice, you should validate your inputs
+//   const data = {
+//     email: formData.get('email') as string,
+//     password: formData.get('password') as string,
+//   };
+
+//   const { error, data: authData } = await supabase.auth.signUp(data);
+
+//   if (error) {
+//     return { error: error ? error.message : 'Error not typed' };
+//   }
+//   // create stripe customer?
+
+//   if (authData.user?.identities?.length === 0) {
+//     return {
+//       error: null,
+//       needsEmailVerification: true,
+//     };
+//   }
+
+//   revalidatePath('/', 'layout');
+//   redirect('/');
+// }
 
 // export async function signup(formData: FormData) {
 //   const supabase = await createClient();
