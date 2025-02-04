@@ -1,4 +1,4 @@
-import { Home, Upload } from 'lucide-react';
+import { Box, ChartArea, Upload } from 'lucide-react';
 
 import {
   Sidebar,
@@ -15,13 +15,18 @@ import {
 // Menu items.
 const items = [
   {
-    title: 'Home',
+    title: 'Dashboard',
     url: '/dashboard',
-    icon: Home,
+    icon: ChartArea,
   },
   {
-    title: 'Uploads',
-    url: '/dashboard/uploads',
+    title: 'Collection',
+    url: '/dashboard/collection',
+    icon: Box,
+  },
+  {
+    title: 'Upload',
+    url: '',
     icon: Upload,
   },
 ];
@@ -32,7 +37,7 @@ export function DashboardSidebar() {
       <SidebarContent>
         <SidebarGroup>
           {/* header goes here */}
-          <SidebarGroupLabel>Common Project</SidebarGroupLabel>
+          <SidebarGroupLabel>Dashboard</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map(item => (
@@ -50,7 +55,13 @@ export function DashboardSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <text>hello there</text>
+        <div className="flex items-center gap-3 rounded-xl p-3">
+          <div className="h-11 w-11 rounded-full bg-yellow-400" />
+          <div className="flex flex-col">
+            <span className="text-xs font-bold">COMMON</span>
+            <span className="font-medium">Daniella Lim</span>
+          </div>
+        </div>
       </SidebarFooter>
     </Sidebar>
   );
