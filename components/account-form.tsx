@@ -12,7 +12,7 @@ export default function AccountForm({ user }: { user: User | null }) {
   const [fullname, setFullname] = useState<string | null>(null);
   const [username, setUsername] = useState<string | null>(null);
   const [website, setWebsite] = useState<string | null>(null);
-  const [avatar_url, setAvatarUrl] = useState<string | null>(null);
+  // const [avatar_url, setAvatarUrl] = useState<string | null>(null);
 
   const getProfile = useCallback(async () => {
     try {
@@ -20,8 +20,8 @@ export default function AccountForm({ user }: { user: User | null }) {
 
       const { data, error, status } = await supabase
         .from('profiles')
-        .select(`full_name, username, website, avatar_url`)
-        .eq('id', user?.id)
+        .select(`last_name, first_name`)
+        .eq('user_id', user?.id)
         .single();
 
       if (error && status !== 406) {
@@ -30,10 +30,10 @@ export default function AccountForm({ user }: { user: User | null }) {
       }
 
       if (data) {
-        setFullname(data.full_name);
-        setUsername(data.username);
-        setWebsite(data.website);
-        setAvatarUrl(data.avatar_url);
+        setFullname(data.last_name);
+        setUsername(data.first_name);
+        setWebsite(data.first_name);
+        // setAvatarUrl(data.first_name);
       }
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'error message here';
@@ -50,12 +50,12 @@ export default function AccountForm({ user }: { user: User | null }) {
   async function updateProfile({
     username,
     website,
-    avatar_url,
+    // avatar_url,
   }: {
     username: string | null;
     fullname: string | null;
     website: string | null;
-    avatar_url: string | null;
+    // avatar_url: string | null;
   }) {
     try {
       setLoading(true);
@@ -65,7 +65,7 @@ export default function AccountForm({ user }: { user: User | null }) {
         full_name: fullname,
         username,
         website,
-        avatar_url,
+        // avatar_url,
         updated_at: new Date().toISOString(),
       });
       if (error) throw error;
@@ -117,7 +117,7 @@ export default function AccountForm({ user }: { user: User | null }) {
       <div>
         <button
           className="button primary block"
-          onClick={() => updateProfile({ fullname, username, website, avatar_url })}
+          onClick={() => updateProfile({ fullname, username, website })}
           disabled={loading}
         >
           {loading ? 'Loading ...' : 'Update'}
