@@ -1,84 +1,63 @@
 'use server';
-
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { UploadElementSchema } from '../../../components/forms/upload';
 import { r2Admin } from '../../../utils/cloudflare/admin';
 import { safeAction } from '../../../utils/safe-action';
+import { createClient } from '../../../utils/supabase/server';
 
 const baseUrl = `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`;
-// export const admin = new S3Client({
-//   region: 'auto',
-//   endpoint: baseUrl,
-//   credentials: {
-//     accessKeyId: process.env.R2_ADMIN_ACCESS_KEY_ID!,
-//     secretAccessKey: process.env.R2_ADMIN_SECRET_ACCESS_KEY!,
-//   },
-// });
 
-export const uploadAction = safeAction(UploadElementSchema, async ({ PNGfile }) => {
-  // TODO: handle auth first
-  // Authentication check
-  // const session = await auth();
-  // if (!session?.user || session.user.role !== 'ADMIN') {
-  //   throw new Error('Unauthorized');
-  // }
+export const uploadAction = safeAction(
+  UploadElementSchema,
+  async ({ title, SVGfile, JPGfile, DWGFTfile, DWGMfile }) => {
+    const supabase = await createClient();
 
-  const file = PNGfile as File;
-  // const size = file.size;
-  // const sizeLimit = 5 * 1024 ** 2; // 5MB
-  const fileType = file.type;
+    if (!SVGfile || !JPGfile || !DWGFTfile || !DWGMfile) {
+      throw new Error('All files are required');
+    }
 
-  // Generate presigned URL
-  const objectKey = `name/filename3`;
-  // maybe its the key name?
-  const putObjectCommand = new PutObjectCommand({
-    Bucket: process.env.R2_BUCKET_NAME!,
-    Key: objectKey,
-    ContentType: fileType,
-  });
-  // what is the cloudflare base path
-  const imageUrl = `${baseUrl}/${objectKey}`;
-  const presignedUrl = await getSignedUrl(r2Admin, putObjectCommand, {
-    expiresIn: 3600, // 5 minutes
-  });
+    const { data, error } = await supabase
+      .from('elements')
+      .insert({ title })
+      .select('element_id')
+      .single();
 
-  return {
-    presignedUrl: presignedUrl,
-    imageUrl,
-  };
-});
+    if (error) throw error;
+    if (!data?.element_id) throw new Error('Failed to create element');
 
-/**
- * in example use case 
- * 
- * 
- * const fileName = input.name
- * const size = input.size
- * const sizeLimit = 5 * 1024 **2; // 5MB
- * 
- * const filetype = input.type
- * 
- * if (fileType !== 'image/jpeg && filetype !== "iamge/png") {
- * throw err ...
- * }
- * 
- * if (size > sizeLimit) {
- * throw err ...
- * }
- * const objectKey = `${input.listingId}/${fileName}`;
- * const cmd = new PutObjectCommand({
-    Bucket: process.env.R2_BUCKET_NAME!,
-    Key: objectkey,
-    ContentLength: size,
-    ContentType: fileType,
-  });
+    const basePath = `elements/${data.element_id}`;
+    const files = {
+      svg: { file: SVGfile, path: `${basePath}/thumbnail.svg` },
+      jpg: { file: JPGfile, path: `${basePath}/preview.jpg` },
+      dwgFt: { file: DWGFTfile, path: `${basePath}/model-ft.dwg` },
+      dwgM: { file: DWGMfile, path: `${basePath}/model-m.dwg` },
+    };
 
-  const imageUrl = `${env.Cloudflaure image base path}/${objectKey}`
-    const presignedUrl = await getSignedUrl(S3, cmd, {
-    expiresIn: 3600, // 5 minutes
-  });
-  console.log("presigned url", presigned url)
-  console.log("image url", imageurl)
-  return {presignedUrl, imageUrl}
- */
+    const presignedUrls = await Promise.all(
+      Object.entries(files).map(async ([, { file, path }]) => {
+        const command = new PutObjectCommand({
+          Bucket: process.env.R2_BUCKET_NAME!,
+          Key: path,
+          ContentType: file.type,
+        });
+        return {
+          presignedUrl: await getSignedUrl(r2Admin, command, { expiresIn: 3600 }),
+          publicUrl: `${baseUrl}/${path}`,
+        };
+      })
+    );
+
+    await supabase
+      .from('elements')
+      .update({
+        svg_url: presignedUrls[0].publicUrl,
+        jpg_url: presignedUrls[1].publicUrl,
+        dwg_ft_url: presignedUrls[2].publicUrl,
+        dwg_m_url: presignedUrls[3].publicUrl,
+      })
+      .eq('element_id', data.element_id);
+
+    return { presignedUrls };
+  }
+);

@@ -1,11 +1,22 @@
+import { redirect } from 'next/navigation';
 import React from 'react';
+import { createClient } from '../../utils/supabase/server';
 
-export default function AuthLayout({
+export default async function AuthLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // TODO:if anytime inside auth you cant double auth so if signed no reason for this route to show at all
+  const supabase = await createClient();
+
+  /**
+   * TODO:use a cache?
+   */
+  const { data } = await supabase.auth.getUser();
+  if (data?.user) {
+    redirect('/private');
+  }
+
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="flex flex-col gap-4 p-6 md:p-10">
