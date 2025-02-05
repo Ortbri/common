@@ -26,7 +26,7 @@ const items = [
   },
   {
     title: 'Upload',
-    url: '',
+    url: '/dashboard/upload',
     icon: Upload,
   },
 ];
