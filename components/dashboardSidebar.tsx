@@ -6,7 +6,6 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -37,7 +36,7 @@ export function DashboardSidebar() {
       <SidebarContent>
         <SidebarGroup>
           {/* header goes here */}
-          <SidebarGroupLabel>Dashboard</SidebarGroupLabel>
+          {/* <SidebarGroupLabel>Dashboard</SidebarGroupLabel> */}
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map(item => (
@@ -45,7 +44,7 @@ export function DashboardSidebar() {
                   <SidebarMenuButton asChild>
                     <a href={item.url}>
                       <item.icon />
-                      <span>{item.title}</span>
+                      {/* <span>{item.title}</span> */}
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -55,13 +54,13 @@ export function DashboardSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <div className="flex items-center gap-3 rounded-xl p-3">
+        {/* <div className="flex items-center gap-3 rounded-xl p-3">
           <div className="h-11 w-11 rounded-full bg-yellow-400" />
           <div className="flex flex-col">
             <span className="text-xs font-bold">COMMON</span>
             <span className="font-medium">Daniella Lim</span>
           </div>
-        </div>
+        </div> */}
       </SidebarFooter>
     </Sidebar>
   );

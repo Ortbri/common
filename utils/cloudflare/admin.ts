@@ -11,12 +11,4 @@ export const r2Admin = new S3Client({
   },
 });
 
-// export const admin = new S3Client({
-//   region: 'auto',
-//   endpoint: baseUrl,
-//   credentials: {
-//     accessKeyId: process.env.R2_ADMIN_ACCESS_KEY_ID!,
-//     secretAccessKey: process.env.R2_ADMIN_SECRET_ACCESS_KEY!,
-//   },
-// });
 export { getSignedUrl, PutObjectCommand };
