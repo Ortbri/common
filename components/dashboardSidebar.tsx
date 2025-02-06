@@ -1,4 +1,4 @@
-import { Box, ChartArea, Upload } from 'lucide-react';
+import { Box } from 'lucide-react';
 
 import {
   Sidebar,
@@ -13,21 +13,21 @@ import {
 
 // Menu items.
 const items = [
-  {
-    title: 'Dashboard',
-    url: '/dashboard',
-    icon: ChartArea,
-  },
+  // {
+  //   title: 'Dashboard',
+  //   url: '/dashboard',
+  //   icon: ChartArea,
+  // },
   {
     title: 'Collection',
     url: '/dashboard/collection',
     icon: Box,
   },
-  {
-    title: 'Upload',
-    url: '/dashboard/upload',
-    icon: Upload,
-  },
+  // {
+  //   title: 'Upload',
+  //   url: '/dashboard/upload',
+  //   icon: Upload,
+  // },
 ];
 
 export function DashboardSidebar() {

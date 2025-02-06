@@ -8,7 +8,7 @@ import { createClient } from '../../../utils/supabase/server';
 
 const baseUrl = `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`;
 
-export const uploadAction = safeAction(
+export const generatePresignedUrlsAction = safeAction(
   UploadElementSchema,
   async ({ title, SVGfile, JPGfile, DWGFTfile, DWGMfile }) => {
     const supabase = await createClient();
@@ -26,18 +26,22 @@ export const uploadAction = safeAction(
     if (error) throw error;
     if (!data?.element_id) throw new Error('Failed to create element');
 
+    const privateBucket = process.env.PRIVATE_R2_BUCKET_NAME!;
+    const publicBucket = process.env.PUBLIC_R2_BUCKET_NAME!;
+
     const basePath = `elements/${data.element_id}`;
+
     const files = {
-      svg: { file: SVGfile, path: `${basePath}/thumbnail.svg` },
-      jpg: { file: JPGfile, path: `${basePath}/preview.jpg` },
+      svg: { file: SVGfile, path: `${basePath}/model.svg` },
+      jpg: { file: JPGfile, path: `${basePath}/model.jpg` },
       dwgFt: { file: DWGFTfile, path: `${basePath}/model-ft.dwg` },
       dwgM: { file: DWGMfile, path: `${basePath}/model-m.dwg` },
     };
 
-    const presignedUrls = await Promise.all(
+    const privatePresignedUrls = await Promise.all(
       Object.entries(files).map(async ([, { file, path }]) => {
         const command = new PutObjectCommand({
-          Bucket: process.env.R2_BUCKET_NAME!,
+          Bucket: privateBucket!, // private bucket name!
           Key: path,
           ContentType: file.type,
         });
@@ -48,16 +52,35 @@ export const uploadAction = safeAction(
       })
     );
 
+    // thumbnail upload presigned url
+    const thumbnailPath = `${basePath}/thumbnail.svg`;
+    const thumbnnail = SVGfile as File;
+    const command = new PutObjectCommand({
+      Bucket: publicBucket!, // private bucket name!
+      Key: thumbnailPath,
+      ContentType: thumbnnail.type,
+    });
+
+    const devSubDomain = process.env.R2_DEV_SUBDOMAIN!;
+    const publicPresignedUrl = await getSignedUrl(r2Admin, command, { expiresIn: 3600 });
+    // const publicThumbnailUrl = `${baseUrl}/${publicBucket}/${thumbnailPath}`;
+    const publicThumbnailUrl = `${devSubDomain}/${thumbnailPath}`; //TODO: THIS IS ONLY FOR DEVELOPMENT LINKS
+
     await supabase
       .from('elements')
       .update({
-        svg_url: presignedUrls[0].publicUrl,
-        jpg_url: presignedUrls[1].publicUrl,
-        dwg_ft_url: presignedUrls[2].publicUrl,
-        dwg_m_url: presignedUrls[3].publicUrl,
+        svg_url: privatePresignedUrls[0].publicUrl,
+        jpg_url: privatePresignedUrls[1].publicUrl,
+        dwg_ft_url: privatePresignedUrls[2].publicUrl,
+        dwg_m_url: privatePresignedUrls[3].publicUrl,
+        thumbnail_url: publicThumbnailUrl,
       })
       .eq('element_id', data.element_id);
 
-    return { presignedUrls };
+    return {
+      privatePresignedUrls,
+      publicPresignedUrl,
+      publicThumbnailUrl,
+    };
   }
 );

@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
-import { uploadAction } from '../../../app/dashboard/upload/action';
+import { generatePresignedUrlsAction } from '../../../app/dashboard/upload/action';
 import { Button } from '../../ui/button';
 import {
   Form,
@@ -21,6 +21,9 @@ import { Input } from '../../ui/input';
 import { Progress } from '../../ui/progress'; // Adjust import path to wherever Progress is exported
 import { UploadElementSchema } from './schema';
 
+/**
+ * TODO: BUG ALL FILES UPLOD TO SAME BUCKET
+ */
 // Helper function (could be in a separate file if you prefer)
 function uploadFileWithProgress(
   file: File,
@@ -71,6 +74,7 @@ export default function UploadForm() {
     jpg: 0,
     dwgFt: 0,
     dwgM: 0,
+    thumbnail: 0,
   });
 
   const {
@@ -80,15 +84,21 @@ export default function UploadForm() {
   const onSubmit = async (data: z.infer<typeof UploadElementSchema>) => {
     try {
       // Step 1: Insert row + get presigned URLs from the server action.
-      const result = await uploadAction(data);
+      const result = await generatePresignedUrlsAction(data);
 
       if (result.serverError) {
         form.setError('root', { message: result.serverError });
         return;
       }
 
-      const presignedUrls = result.data?.presignedUrls;
+      const presignedUrls = result.data?.privatePresignedUrls;
       if (!presignedUrls) {
+        form.setError('root', { message: 'No presigned URLs returned.' });
+        return;
+      }
+      const publicPresignedUrl = result.data?.publicPresignedUrl;
+      // const ss = result.data?.publicThumbnailUrl;
+      if (!publicPresignedUrl) {
         form.setError('root', { message: 'No presigned URLs returned.' });
         return;
       }
@@ -114,6 +124,10 @@ export default function UploadForm() {
           uploadFileWithProgress(data.DWGMfile, dwgMUrl.presignedUrl, pct =>
             setUploadProgress(prev => ({ ...prev, dwgM: pct }))
           ),
+        data.SVGfile &&
+          uploadFileWithProgress(data.SVGfile, publicPresignedUrl, pct =>
+            setUploadProgress(prev => ({ ...prev, thumbnail: pct }))
+          ),
       ]);
 
       // Step 3: If all succeeded
@@ -123,7 +137,7 @@ export default function UploadForm() {
 
       // Optionally reset the form and progress
       form.reset();
-      setUploadProgress({ svg: 0, jpg: 0, dwgFt: 0, dwgM: 0 });
+      setUploadProgress({ svg: 0, jpg: 0, dwgFt: 0, dwgM: 0, thumbnail: 0 });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       console.error('Upload error:', errorMessage);
@@ -140,7 +154,7 @@ export default function UploadForm() {
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-lg font-bold">Title of Folder</FormLabel>
+              <FormLabel className="font-bold">Title of Folder</FormLabel>
               <FormControl>
                 <Input type="text" placeholder="Man with hat" {...field} />
               </FormControl>
@@ -158,7 +172,7 @@ export default function UploadForm() {
           name="SVGfile"
           render={({ field: { onChange, ref } }) => (
             <FormItem>
-              <FormLabel className="text-lg font-bold">SVG File</FormLabel>
+              <FormLabel className="font-bold">SVG File</FormLabel>
               <FormControl>
                 <Input
                   type="file"
@@ -169,8 +183,13 @@ export default function UploadForm() {
                 />
               </FormControl>
               <FormMessage />
+              <FormDescription>
+                Progress bar 1 is svg - Progress bar 2 is public svg
+              </FormDescription>
               {/* Show progress bar for the SVG file */}
               <Progress value={uploadProgress.svg} className="mt-2" />
+
+              <Progress value={uploadProgress.thumbnail} className="mt-2" />
             </FormItem>
           )}
         />
@@ -181,7 +200,7 @@ export default function UploadForm() {
           name="JPGfile"
           render={({ field: { onChange, ref } }) => (
             <FormItem>
-              <FormLabel className="text-lg font-bold">JPG File</FormLabel>
+              <FormLabel className="font-bold">JPG File</FormLabel>
               <FormControl>
                 <Input
                   type="file"
@@ -204,7 +223,7 @@ export default function UploadForm() {
           name="DWGFTfile"
           render={({ field: { onChange, ref } }) => (
             <FormItem>
-              <FormLabel className="text-lg font-bold">DWG File (FT)</FormLabel>
+              <FormLabel className="font-bold">DWG File (FT)</FormLabel>
               <FormControl>
                 <Input
                   type="file"
@@ -227,7 +246,7 @@ export default function UploadForm() {
           name="DWGMfile"
           render={({ field: { onChange, ref } }) => (
             <FormItem>
-              <FormLabel className="text-lg font-bold">DWG File (M)</FormLabel>
+              <FormLabel className="font-bold">DWG File (M)</FormLabel>
               <FormControl>
                 <Input
                   type="file"
