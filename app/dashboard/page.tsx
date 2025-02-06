@@ -36,6 +36,27 @@ async function getUploads() {
   return data;
 }
 
+function UploadSheet() {
+  return (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button size={'sm'} className="gap-[2px]">
+          <span>New Upload</span>
+        </Button>
+      </SheetTrigger>
+      <SheetContent>
+        <SheetHeader className="pb-3">
+          <SheetTitle>Upload Element</SheetTitle>
+          <SheetDescription>
+            Let me know if any more forms are needed - also could add drag and drop later
+          </SheetDescription>
+        </SheetHeader>
+        <UploadForm />
+      </SheetContent>
+    </Sheet>
+  );
+}
+
 export default async function Uploads() {
   // Fetch the upload data from Supabase.
   const uploadData = await getUploads();
@@ -49,7 +70,7 @@ export default async function Uploads() {
             Do not do normal uploads until custom domain is set in cloudflare
           </p>
         </div>
-        <SheetDemo />
+        <UploadSheet />
       </div>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {uploadData.map(item => (
@@ -84,26 +105,5 @@ export default async function Uploads() {
         ))}
       </div>
     </div>
-  );
-}
-
-export function SheetDemo() {
-  return (
-    <Sheet>
-      <SheetTrigger asChild>
-        <Button size={'sm'} className="gap-[2px]">
-          <span>New Upload</span>
-        </Button>
-      </SheetTrigger>
-      <SheetContent>
-        <SheetHeader className="pb-3">
-          <SheetTitle>Upload Element</SheetTitle>
-          <SheetDescription>
-            Let me know if any more forms are needed - also could add drag and drop later
-          </SheetDescription>
-        </SheetHeader>
-        <UploadForm />
-      </SheetContent>
-    </Sheet>
   );
 }
