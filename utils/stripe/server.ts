@@ -1,13 +1,14 @@
 // 'use server';
 
+// // import { stripe } from '@/utils/stripe/config';
+// // import Stripe from 'stripe';
 // import Stripe from 'stripe';
-// import { stripe } from './config';
-// import { createClient } from '../supabase/server';
-// // import { createOrRetrieveCustomer } from '../supabase/admin';
-// import { getURL, getErrorRedirect, calculateTrialEndUnixTimestamp } from '@/utils/helpers';
+// // import { createClient } from '@/utils/supabase/server';
+// // import { calculateTrialEndUnixTimestamp, getErrorRedirect, getURL } from '@/utils/helpers';
+// import { createOrRetrieveCustomer } from '@/utils/supabase/admin';
 // // import { Tables } from '@/types_db';
 
-// type Price = Tables<'prices'>;
+// // type Price = Tables<'prices'>;
 
 // type CheckoutResponse = {
 //   errorRedirect?: string;
@@ -34,10 +35,10 @@
 //     // Retrieve or create the customer in Stripe
 //     let customer: string;
 //     try {
-//       // customer = await createOrRetrieveCustomer({
-//       //   uuid: user?.id || '',
-//       //   email: user?.email || '',
-//       // });
+//       customer = await createOrRetrieveCustomer({
+//         uuid: user?.id || '',
+//         email: user?.email || '',
+//       });
 //     } catch (err) {
 //       console.error(err);
 //       throw new Error('Unable to access customer record.');
@@ -46,7 +47,7 @@
 //     let params: Stripe.Checkout.SessionCreateParams = {
 //       allow_promotion_codes: true,
 //       billing_address_collection: 'required',
-//       // customer,
+//       customer,
 //       customer_update: {
 //         address: 'auto',
 //       },
