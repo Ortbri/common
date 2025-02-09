@@ -1,4 +1,5 @@
 import React from 'react';
+import MarketingHeader from '../../features/marketing/header';
 
 export default function MarketingLayout({
   children,
@@ -7,7 +8,7 @@ export default function MarketingLayout({
 }>) {
   return (
     <div>
-      {/* <MarketingHeader /> */}
+      <MarketingHeader />
       {children}
       {/* <MarketingFooter /> */}
     </div>

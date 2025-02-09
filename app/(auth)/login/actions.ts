@@ -21,5 +21,5 @@ export const loginAction = safeAction(LoginSchema, async ({ email, password }) =
   // Revalidate the path to update server components with new auth state
   revalidatePath('/', 'layout');
 
-  return { redirect: '/browse' };
+  return { redirect: '/' }; // was using /browse as route
 });

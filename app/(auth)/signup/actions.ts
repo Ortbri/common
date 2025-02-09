@@ -39,7 +39,7 @@ export const signupAction = safeAction(
     revalidatePath('/', 'layout'); // Refresh cache if necessary
 
     // Return the session and redirect URL
-    return { redirectTo: '/browse' };
+    return { redirectTo: '/' }; // was using /browse
   }
 );
 
