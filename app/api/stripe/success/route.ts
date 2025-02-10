@@ -35,7 +35,7 @@ export async function GET() {
  * Function to sync all of the data for a given Stripe customer to KV.
  * This will be used in both the /success endpoint and the /api/stripe webhook handler.
  */
-export async function syncStripeDataToKV(customerId: string) {
+ async function syncStripeDataToKV(customerId: string) {
   try {
     // Fetch latest subscription data from Stripe
     const subscriptions = await stripe.subscriptions.list({
