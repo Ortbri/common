@@ -1,14 +1,11 @@
 {
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[javascriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[json]": {
@@ -17,13 +14,16 @@
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "[css]": {
+  "[markdown]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[scss]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "[markdown]": {
+  "[typescript]": {
+    "editor.defaultFormatter": "denoland.vscode-deno"
+  },
+  "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "deno.enablePaths": ["supabase/functions"],
@@ -47,16 +47,16 @@
     "source.fixAll.eslint": "always",
     "source.organizeImports": "always"
   },
-  "editor.formatOnSave": true,
-  "editor.formatOnPaste": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "files.autoSave": "onFocusChange",
-  "prettier.requireConfig": true,
-  "prettier.configPath": ".prettierrc",
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
   "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
-  "typescript.preferences.importModuleSpecifier": "shortest",
-  "javascript.preferences.importModuleSpecifier": "shortest",
   "files.associations": {
     "*.css": "tailwindcss"
-  }
+  },
+  "files.autoSave": "onFocusChange",
+  "javascript.preferences.importModuleSpecifier": "shortest",
+  "prettier.configPath": ".prettierrc",
+  "prettier.requireConfig": true,
+  "typescript.preferences.importModuleSpecifier": "shortest"
 }
