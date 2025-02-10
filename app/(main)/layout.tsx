@@ -1,5 +1,5 @@
 import React from 'react';
-import MarketingHeader from '../../features/marketing/header';
+import MarketingHeader from '../../components/header';
 
 export default function MarketingLayout({
   children,
