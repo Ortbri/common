@@ -26,7 +26,7 @@ const allowedEvents: Stripe.Event.Type[] = [
   'payment_intent.canceled',
 ];
 
-export async function tryCatch<T>(promise: Promise<T>): Promise<{ result?: T; error?: unknown }> {
+ async function tryCatch<T>(promise: Promise<T>): Promise<{ result?: T; error?: unknown }> {
   try {
     const result = await promise;
     return { result };
