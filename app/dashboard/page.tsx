@@ -19,6 +19,11 @@ import {
 } from '../../components/ui/sheet';
 import { createClient } from '../../utils/supabase/client';
 
+//
+// type UploadItemType {
+
+// };
+
 // A helper function to fetch uploads from Supabase.
 async function getUploads() {
   const supabase = createClient();
@@ -100,7 +105,9 @@ export default async function Uploads() {
                 <div className="mb-4 h-48 rounded-md bg-gray-200" />
               )}
             </CardContent>
-            <CardFooter></CardFooter>
+            <CardFooter>
+              <CardDescription>List of Details here</CardDescription>
+            </CardFooter>
           </Card>
         ))}
       </div>
