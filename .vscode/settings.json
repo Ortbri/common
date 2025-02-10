@@ -26,7 +26,9 @@
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "deno.enablePaths": ["supabase/functions"],
+  "deno.enablePaths": [
+    "supabase/functions"
+  ],
   "deno.lint": true,
   "deno.unstable": [
     "bare-node-builtins",
@@ -50,7 +52,12 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnPaste": true,
   "editor.formatOnSave": true,
-  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
   "files.associations": {
     "*.css": "tailwindcss"
   },
