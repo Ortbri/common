@@ -1,6 +1,5 @@
 'use client';
 
-import { AvatarImage } from '@radix-ui/react-avatar';
 import { Asterisk, Download, Search } from 'lucide-react';
 import Image from 'next/image';
 import { Avatar, AvatarFallback } from './ui/avatar';
@@ -24,17 +23,17 @@ function MadeBy() {
   const people = [
     {
       name: 'Anna W',
-      image: '/anna-w.png',
+      // image: '/anna-w.png',
       fallback: 'AW',
     },
     {
       name: 'Brian',
-      image: '/danny-w.png',
+      // image: '/danny-w.png',
       fallback: 'BJ',
     },
     {
       name: 'Danny',
-      image: '/nick-w.png',
+      // image: '/nick-w.png',
       fallback: 'JD',
     },
   ];
@@ -47,7 +46,7 @@ function MadeBy() {
             key={person.name}
             style={{ transform: `translateX(${index * 28}px)` }}
           >
-            <AvatarImage src={person.image} alt={person.name} className="scale-125 object-cover" />
+            {/* <AvatarImage src={person.image} alt={person.name} className="scale-125 object-cover" /> */}
             <AvatarFallback>{person.fallback}</AvatarFallback>
           </Avatar>
         );
