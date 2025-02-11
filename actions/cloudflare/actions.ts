@@ -1,13 +1,21 @@
 'use server';
-import { PutObjectCommand } from '@aws-sdk/client-s3';
+import { GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import { UploadElementSchema } from '../../../components/forms/upload';
-import { r2Admin } from '../../../utils/cloudflare/admin';
-import { safeAction } from '../../../utils/safe-action';
-import { createClient } from '../../../utils/supabase/server';
+import { DownloadSchema } from '../../components/forms/download/schema';
+import { UploadElementSchema } from '../../components/forms/upload';
+import { r2Admin, r2Download } from '../../utils/cloudflare/admin';
+import { safeAction } from '../../utils/safe-action';
+import { createClient } from '../../utils/supabase/server';
 
+
+/* -------------------------------------------------------------------------- */
+/*                                presigned url                               */
+/* -------------------------------------------------------------------------- */
 const baseUrl = `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`;
-
+/**
+ * request a presigned url from cloudflare 
+ * returns private signed urls for both the public and private bucket
+ */
 export const generatePresignedUrlsAction = safeAction(
   UploadElementSchema,
   async ({ title, SVGfile, JPGfile, DWGFTfile, DWGMfile }) => {
@@ -82,5 +90,48 @@ export const generatePresignedUrlsAction = safeAction(
       publicPresignedUrl,
       publicThumbnailUrl,
     };
+  }
+);
+
+
+
+
+/* -------------------------------------------------------------------------- */
+/*                                  download                                  */
+/* -------------------------------------------------------------------------- */
+export const generateDownloadUrlAction = safeAction(
+  DownloadSchema,
+  async ({ elementId, fileType }) => {
+    const supabase = await createClient();
+    
+    // Authentication check
+    const { data: { user } } = await supabase.auth.getUser(); 
+      if (!user) throw new Error('Not authenticated');
+      
+
+      // TODO: need to check if a user is subscribed to stripe as a pro user
+    // Map file types to storage paths
+    const filePaths = {
+      svg: `elements/${elementId}/model.svg`,
+      jpg: `elements/${elementId}/model.jpg`,
+      'dwg-ft': `elements/${elementId}/model-ft.dwg`,
+      'dwg-m': `elements/${elementId}/model-m.dwg`,
+    };
+
+    // Type-safe file type access
+    const key = filePaths[fileType as keyof typeof filePaths];
+    if (!key) throw new Error('Invalid file type');
+
+    const command = new GetObjectCommand({
+      Bucket: process.env.PRIVATE_R2_BUCKET_NAME!,
+      Key: key,
+    });
+
+    // Generate presigned URL valid for 1 hour
+    const downloadUrl = await getSignedUrl(r2Download, command, { 
+      expiresIn: 1000 
+    });
+
+    return { downloadUrl };
   }
 );

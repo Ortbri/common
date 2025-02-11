@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { DownloadForm } from '../../components/forms/download';
 import UploadForm from '../../components/forms/upload/form';
 import { Button } from '../../components/ui/button';
 import {
@@ -105,8 +106,9 @@ export default async function Uploads() {
                 <div className="mb-4 h-48 rounded-md bg-gray-200" />
               )}
             </CardContent>
-            <CardFooter>
+            <CardFooter className="flex flex-col">
               <CardDescription>List of Details here</CardDescription>
+              <DownloadForm id={item.element_id} />
             </CardFooter>
           </Card>
         ))}

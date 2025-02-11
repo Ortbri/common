@@ -7,11 +7,9 @@ export default async function AuthLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // INSTA NAVIGATE OUT if already logged in
   const supabase = await createClient();
 
-  /**
-   * TODO:use a cache?
-   */
   const { data } = await supabase.auth.getUser();
   if (data?.user) {
     redirect('/user');

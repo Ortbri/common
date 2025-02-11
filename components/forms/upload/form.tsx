@@ -6,7 +6,8 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
-import { generatePresignedUrlsAction } from '../../../app/dashboard/upload/action';
+
+import { generatePresignedUrlsAction } from '../../../actions/cloudflare/actions';
 import { Button } from '../../ui/button';
 import {
   Form,
