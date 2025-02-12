@@ -1,7 +1,6 @@
 'use client';
 
 import { Asterisk, Download, Search } from 'lucide-react';
-import Image from 'next/image';
 import { Avatar, AvatarFallback } from './ui/avatar';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -115,13 +114,13 @@ function AllAccess() {
             key={i}
             className="relative aspect-square overflow-hidden rounded-lg border bg-background shadow-sm transition-shadow hover:shadow-md"
           >
-            <Image
+            {/* <Image
               src="/dimension.svg"
               alt="Dimension diagram"
               className="h-full w-full object-contain p-4"
               width={100}
               height={100}
-            />
+            /> */}
             {/* download */}
             <Button
               variant={'secondary'}

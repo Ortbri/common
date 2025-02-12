@@ -39,20 +39,20 @@ function DownloadForm({ id }: { id: string }) {
         }
 
         // Show the file save dialog
-        const handle = await (window as any).showSaveFilePicker({
-          suggestedName: `drawing-${id}.dwg`,
-          types: [
-            {
-              description: 'DWG File',
-              accept: { 'image/svg+xml': ['.dwg'] },
-            },
-          ],
-        });
+        // const handle = await (window as any).showSaveFilePicker({
+        //   suggestedName: `drawing-${id}.dwg`,
+        //   types: [
+        //     {
+        //       description: 'DWG File',
+        //       accept: { 'image/svg+xml': ['.dwg'] },
+        //     },
+        //   ],
+        // });
 
         // Write the file
-        const writable = await handle.createWritable();
-        await writable.write(blob);
-        await writable.close();
+        // const writable = await handle.createWritable();
+        // await writable.write(blob);
+        // await writable.close();
 
         toast.success('File saved successfully', {
           description: 'Your file has been saved to the location you chose',

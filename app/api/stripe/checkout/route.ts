@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation';
 import { NextResponse } from 'next/server';
 import { stripe } from '../../../../utils/stripe/config';
 import { createClient } from '../../../../utils/supabase/server';
@@ -6,18 +7,14 @@ import { kv } from '../../../../utils/upstash/client';
 export async function GET() {
   const supabase = await createClient();
 
-  // Get the authenticated user from Supabase.
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.getUser();
-  if (error) {
-    console.error('Error retrieving user:', error);
-    return NextResponse.json({ error: 'Error retrieving user' }, { status: 500 });
-  }
+  const { data: { user },
+  } = await supabase.auth.getUser()
+  
   if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    console.error('Error retrieving user');
+    return redirect('/');
   }
+
 
   // Retrieve the Stripe customer ID from your KV store.
   let stripeCustomerId = (await kv.get(`stripe:user_id:${user.id}`)) as string;
