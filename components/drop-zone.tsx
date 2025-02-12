@@ -1,4 +1,4 @@
-import { FileIcon, UploadIcon } from '@radix-ui/react-icons';
+import { FileIcon, UploadIcon } from 'lucide-react';
 import * as React from 'react';
 import { Button } from './ui/button';
 import { Card, CardContent } from './ui/card';
