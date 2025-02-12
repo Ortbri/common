@@ -20,11 +20,6 @@ import {
 } from '../../components/ui/sheet';
 import { createClient } from '../../utils/supabase/client';
 
-//
-// type UploadItemType {
-
-// };
-
 // A helper function to fetch uploads from Supabase.
 async function getUploads() {
   const supabase = createClient();

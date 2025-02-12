@@ -1,11 +1,9 @@
-'use client';
+// 'use client';
 
 import { Asterisk } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '../../components/ui/button';
-
-// import HomeSearch from '../../features/marketing/homeSearch';
 
 export default function Home() {
   return (
@@ -68,9 +66,6 @@ function HomeCTA() {
     </div>
   );
 }
-// function ListDWG() {
-//   return <div>test 1 array of items for now</div>;
-// }
 
 function AllAccess() {
   return (
@@ -81,7 +76,6 @@ function AllAccess() {
             key={i}
             className="relative aspect-square overflow-hidden rounded-3xl border bg-background shadow-sm transition-shadow hover:shadow-md"
           >
-            {/* <h1 className="px-4 text-lg">Tittle</h1> */}
             <Image
               src="/dimension.svg"
               alt="Dimension diagram"
@@ -91,7 +85,7 @@ function AllAccess() {
             />
           </div>
         ))}
-        <div className="absolute bottom-24 h-44 w-full bg-foreground/20" />
+        {/* <div className="absolute bottom-24 h-44 w-full bg-foreground/20" /> */}
       </div>
     </div>
   );

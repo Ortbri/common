@@ -85,7 +85,7 @@ async function processEvent(event: Stripe.Event) {
 }
 
 /* ---------------------------------- sync ---------------------------------- */
-export async function syncStripeDataToKV(customerId: string) {
+ async function syncStripeDataToKV(customerId: string) {
   // Fetch latest subscription data from Stripe
   const subscriptions = await stripe.subscriptions.list({
     customer: customerId,

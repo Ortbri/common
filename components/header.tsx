@@ -1,8 +1,16 @@
 import { Asterisk } from 'lucide-react';
 import Link from 'next/link';
+import { createClient } from '../utils/supabase/server';
+import { Avatar, AvatarFallback } from './ui/avatar';
 import { Button } from './ui/button';
 
-const MarketingHeader = () => {
+const MarketingHeader = async () => {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  console.log(user);
+
   return (
     <>
       <header
@@ -19,17 +27,31 @@ const MarketingHeader = () => {
           </Link>
           {/* Links */}
           <div className="flex flex-1 flex-row items-center justify-end gap-4">
+            {/* if subscribed show pricing */}
             <Link href={'/pricing'} className="text-xs">
               Pricing
             </Link>
-            <Link href={'/login'} className="text-xs">
-              Log in
-            </Link>
-            <Link href={'/signup'}>
-              <Button className="gap-1 whitespace-nowrap rounded-3xl" size={'sm'}>
-                Join for Free
-              </Button>
-            </Link>
+            {user ? (
+              <>
+                <Avatar className="h-9 w-9">
+                  <AvatarFallback className="bg-foreground text-sm text-card">
+                    {user.user_metadata.first_name.charAt(0) +
+                      user.user_metadata.last_name.charAt(0)}
+                  </AvatarFallback>
+                </Avatar>
+              </>
+            ) : (
+              <>
+                <Link href={'/login'} className="text-xs">
+                  Log in
+                </Link>
+                <Link href={'/signup'}>
+                  <Button className="gap-1 whitespace-nowrap rounded-3xl" size={'sm'}>
+                    Join for Free
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </header>

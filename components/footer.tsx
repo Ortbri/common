@@ -1,10 +1,11 @@
 import { Asterisk } from 'lucide-react';
 import Link from 'next/link';
+import { ThemeToggle } from './themeToggle';
 import { Separator } from './ui/separator';
 
 const MarketingFooter = () => {
   return (
-    <footer className="flex flex-col gap-5 p-10">
+    <footer className="mx-auto flex w-full flex-col gap-5 px-10 pb-10 pt-24">
       <CompanyInfo />
       <Separator />
       <Rights />
@@ -29,29 +30,25 @@ const menuItems = [
 
 function CompanyInfo() {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-row items-center justify-between gap-2">
       {/* logo */}
       <div className="flex flex-row items-center gap-0">
         <Asterisk className="h-6 w-6" />
-        <h4 className="text-lg font-bold">COMMON PROJECT</h4>
+        <h4 className="text-lg font-bold">COMMON</h4>
       </div>
-      {/* description w/ links */}
-      <div className="flex flex-row justify-between">
-        <p className="max-w-xs text-sm text-muted-foreground">
-          Essential 2D Designs, Instant Search, Drag and Drop. Made for Productivity.
-        </p>
-        <div className="flex gap-8">
-          {menuItems.map(item => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className="text-sm text-muted-foreground hover:text-foreground"
-            >
-              {item.name}
-            </Link>
-          ))}
-        </div>
+
+      <div className="flex gap-8">
+        {menuItems.map(item => (
+          <Link
+            key={item.name}
+            href={item.href}
+            className="text-sm text-muted-foreground hover:text-foreground"
+          >
+            {item.name}
+          </Link>
+        ))}
       </div>
+      <ThemeToggle />
     </div>
   );
 }
@@ -70,3 +67,25 @@ function Rights() {
     </div>
   );
 }
+
+// Button code
+// <button className="inline-flex h-12 animate-shimmer items-center justify-center rounded-md border border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] px-6 font-medium text-slate-400 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
+//   Shimmer
+// </button>
+
+// // tailwind.config.js code
+// {
+//   "animation": {
+//     shimmer: "shimmer 2s linear infinite"
+//   },
+//   "keyframes": {
+//     shimmer: {
+//       from: {
+//         "backgroundPosition": "0 0"
+//       },
+//       to: {
+//         "backgroundPosition": "-200% 0"
+//       }
+//     }
+//   }
+// }
