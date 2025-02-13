@@ -14,7 +14,7 @@ export async function GET() {
 
   if (error || !user) {
     console.error('Unauthorized access:', error);
-    return redirect('/');
+    return redirect('/pricing');
   }
 
   // Retrieve the Stripe customer ID from KV
@@ -28,7 +28,7 @@ export async function GET() {
   await syncStripeDataToKV(stripeCustomerId);
 
   // Redirect user to a private area or dashboard
-  return redirect('/private'); // Change to the correct success destination
+  return redirect('/user'); // Change to the correct success destination
 }
 
 /**

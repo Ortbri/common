@@ -1,5 +1,5 @@
 'use client';
-import { Asterisk, Calendar, Download, Key, Rocket, Search } from 'lucide-react';
+import { Asterisk, Calendar, Download, Key, LoaderCircle, Rocket, Search } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useMemo, useState } from 'react';
 import { Button } from '../../components/ui/button';
@@ -52,36 +52,41 @@ const FeaturesList = () => {
     []
   );
 };
-const handleRedirect = async () => {
-  try {
-    const response = await fetch('/api/test');
-
-    if (response.redirected) {
-      // Manually redirect the browser
-      window.location.href = response.url;
-    } else {
-      // Handle non-redirect responses
-      const data = await response.json();
-      console.log(data);
-    }
-  } catch (error) {
-    console.error('Error:', error);
-  }
-};
-
-const handleSubscription = async () => {
-  try {
-    await fetch('/api/test');
-  } catch (error) {
-    const msg = error instanceof Error ? error.message : 'unknown error';
-    console.log(msg);
-  }
-};
 
 export default function Offer() {
-  const [isYearly, setIsYearly] = useState(false);
+  const [isYearly, setIsYearly] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const monthlyPrice = 5;
   const yearlyPrice = 52;
+  const handleSub = async (isYearly: boolean) => {
+    try {
+      console.log(!!isYearly, 'is yearly??');
+      setIsLoading(true);
+      const response = await fetch('/api/stripe/checkout');
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          // ✅ If unauthorized, redirect to signup
+          window.location.href = '/signup';
+          return;
+        }
+        throw new Error('Failed to create checkout session');
+      }
+
+      const data = await response.json();
+
+      if (data.url) {
+        // ✅ Redirect to Stripe Checkout
+        window.location.href = data.url;
+      } else {
+        console.error('No checkout URL received');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   // Optimize animation config
   const animationConfig = {
@@ -104,7 +109,7 @@ export default function Offer() {
         <div className="mx-auto max-w-4xl text-center">
           <h2 className="text-4xl font-bold tracking-tight sm:text-6xl">Design like a Pro.</h2>
           <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">
-            Get full access to 500 dwg essential assets Cancel anytime.
+            Get full access to 500 dwg essential assets | Cancel anytime.
           </p>
         </div>
 
@@ -192,9 +197,18 @@ export default function Offer() {
                 Everything you need to create amazing designs.
               </p>
               <FeaturesList />
-              <Button onClick={handleRedirect} className="mt-8 w-full rounded-3xl" size={'lg'}>
+
+              <Button
+                className="mt-8 w-full rounded-3xl"
+                onClick={() => handleSub(isYearly)}
+                size={'lg'}
+                disabled={isLoading}
+              >
                 Get All Access
-                <Asterisk strokeWidth={2} className="h-4 w-4" />
+                <span className="relative">
+                  {isLoading && <LoaderCircle strokeWidth={2} className="h-4 w-4 animate-spin" />}
+                </span>
+                {!isLoading && <Asterisk strokeWidth={2} className="h-4 w-4" />}
               </Button>
             </motion.div>
           </AnimatePresence>
