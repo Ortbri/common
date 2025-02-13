@@ -36,8 +36,8 @@ export const generatePresignedUrlsAction = safeAction(
     if (error) throw error;
     if (!data?.element_id) throw new Error('Failed to create element');
 
-    const privateBucket = process.env.PRIVATE_R2_BUCKET_NAME!;
-    const publicBucket = process.env.PUBLIC_R2_BUCKET_NAME!;
+    const privateBucket = process.env.R2_PRIVATE_BUCKET_NAME!;
+    const publicBucket = process.env.R2_PUBLIC_BUCKET_NAME!;
 
     const basePath = `elements/${data.element_id}`;
 
@@ -71,7 +71,7 @@ export const generatePresignedUrlsAction = safeAction(
       ContentType: thumbnnail.type,
     });
 
-    const devSubDomain = process.env.R2_DEV_SUBDOMAIN!;
+    const devSubDomain = process.env.R2_PUBLIC_BUCKET_URL!;
     const publicPresignedUrl = await getSignedUrl(r2Admin, command, { expiresIn: 3600 });
     // const publicThumbnailUrl = `${baseUrl}/${publicBucket}/${thumbnailPath}`;
     const publicThumbnailUrl = `${devSubDomain}/${thumbnailPath}`; //TODO: THIS IS ONLY FOR DEVELOPMENT LINKS
@@ -150,7 +150,7 @@ export const generateDownloadUrlAction = safeAction(
     if (!key) throw new Error('Invalid file type');
 
     const command = new GetObjectCommand({
-      Bucket: process.env.PRIVATE_R2_BUCKET_NAME!,
+      Bucket: process.env.R2_PRIVATE_BUCKET_NAME!,
       Key: key,
     });
 
