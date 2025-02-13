@@ -58,11 +58,20 @@ export default function Offer() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const monthlyPrice = 5;
   const yearlyPrice = 52;
-  const handleSub = async (isYearly: boolean) => {
+  /* ------------------------------- handle sub ------------------------------- */
+  const handleSub = async () => {
     try {
-      console.log(!!isYearly, 'is yearly??');
       setIsLoading(true);
-      const response = await fetch('/api/stripe/checkout');
+      // console.log(!!isYearly, 'is yearly??');
+      const response = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          isYearly,
+        }),
+      });
 
       if (!response.ok) {
         if (response.status === 401) {
@@ -100,12 +109,10 @@ export default function Offer() {
     <section className="relative">
       {/* title bar */}
 
-      <div className="dark:bg-dot-white/[0.2] bg-dot-black/[0.2] relative flex h-[50rem] w-full flex-col items-center justify-center bg-background">
+      <div className="relative flex h-[50rem] w-full flex-col items-center justify-center bg-background bg-dot-black/[0.2] dark:bg-dot-white/[0.2]">
         {/* Radial gradient for the container to give a faded look */}
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-background [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
         {/* <p className="relative z-20 bg-gradient-to-b from-neutral-200 to-neutral-500 bg-clip-text py-8 text-4xl font-bold text-transparent sm:text-7xl"> */}
-        {/* Backgrounds */}
-        {/* </p> */}
         <div className="mx-auto max-w-4xl text-center">
           <h2 className="text-4xl font-bold tracking-tight sm:text-6xl">Design like a Pro.</h2>
           <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">
@@ -167,7 +174,7 @@ export default function Offer() {
             <motion.div
               key={isYearly ? 'yearly' : 'monthly'}
               {...animationConfig}
-              className="dark:ring-gray z-10 rounded-3xl bg-white ring-1 ring-gray-200 dark:bg-black dark:ring-gray-900 sm:p-5"
+              className="dark:ring-gray z-10 rounded-3xl bg-white p-4 shadow-lg ring-1 ring-gray-200 dark:bg-black dark:ring-gray-900"
             >
               <div className="flex flex-row justify-between">
                 <h3 className="text-lg font-semibold leading-8">
@@ -200,7 +207,9 @@ export default function Offer() {
 
               <Button
                 className="mt-8 w-full rounded-3xl"
-                onClick={() => handleSub(isYearly)}
+                // onClick={}
+                // type="submit"
+                onClick={handleSub}
                 size={'lg'}
                 disabled={isLoading}
               >

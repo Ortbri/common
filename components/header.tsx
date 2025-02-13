@@ -9,7 +9,8 @@ const MarketingHeader = async () => {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  console.log(user);
+  // console.log(user);
+  // TODO:if you have a subscription, no pricing item shows there!
 
   return (
     <>
@@ -32,14 +33,14 @@ const MarketingHeader = async () => {
               Pricing
             </Link>
             {user ? (
-              <>
+              <Link href={'/user'}>
                 <Avatar className="h-9 w-9">
                   <AvatarFallback className="bg-foreground text-sm text-card">
                     {user.user_metadata.first_name.charAt(0) +
                       user.user_metadata.last_name.charAt(0)}
                   </AvatarFallback>
                 </Avatar>
-              </>
+              </Link>
             ) : (
               <>
                 <Link href={'/login'} className="text-xs">

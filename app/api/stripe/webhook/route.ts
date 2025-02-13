@@ -48,6 +48,8 @@ export async function POST(req: Request) {
       throw new Error("[STRIPE HOOK] Header isn't a string???");
     }
 
+
+    //TODO: webhook setup!!
     const event = stripe.webhooks.constructEvent(
       body,
       signature,

@@ -1,26 +1,31 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
+import { getURL } from '../../../../utils/helpers';
 import { stripe } from '../../../../utils/stripe/config';
 import { createClient } from '../../../../utils/supabase/server';
 import { kv } from '../../../../utils/upstash/client';
 
-export async function GET() {
+export async function POST(req: NextRequest) {
+  // request here
   try {
+    // const url = await getURL()
+    const { isYearly } = await req.json(); // Parse JSON body to get isYearly
+    console.log("isYearly:", isYearly);
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
-
     if (!user) {
-      // Return a proper JSON response instead of redirecting in an API route
+      console.log("⚠️ NO USER HERE")
       return NextResponse.json(
-        { error: 'Unauthorized', redirectUrl: `${process.env.NEXT_PUBLIC_SITE_URL}/signup` },
+        { error: 'Unauthorized', redirectUrl: getURL("/signup") },
         { status: 401 }
       );
     }
-
     // Retrieve the Stripe customer ID from your KV store.
     let stripeCustomerId = (await kv.get(`stripe:user_id:${user.id}`)) as string;
+      console.log("current stripe customer", stripeCustomerId)
 
     // If the user does not yet have a Stripe customer, create one.
     if (!stripeCustomerId) {
+      console.log("⚡ TRYING TO CREATE CUSTOMER")
       const newCustomer = await stripe.customers.create({
         email: user.email,
         metadata: { user_id: user.id },
@@ -29,19 +34,28 @@ export async function GET() {
       stripeCustomerId = newCustomer.id;
     }
 
-    // Create a checkout session using the Stripe customer ID.
+    // Determine which Stripe price ID to use based on isYearly
+    const priceId = isYearly
+      ? process.env.STRIPE_PRICE_YEARLY_ID
+      : process.env.STRIPE_PRICE_MONTHLY_ID;
+
+    if (!priceId) {
+      throw new Error("Missing Stripe price ID");
+    }
+
+
     const checkout = await stripe.checkout.sessions.create({
       customer: stripeCustomerId,
       payment_method_types: ['card'],
       mode: 'subscription',
       line_items: [
         {
-          price: process.env.STRIPE_PRICE_ID,
+          price: priceId,
           quantity: 1,
         },
       ],
-      success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/stripe/success`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/stripe/cancel`,
+      success_url: getURL("api/stripe/success"),
+      cancel_url: getURL("/api/stripe/cancel"),
     });
 
     if (!checkout.url) {
