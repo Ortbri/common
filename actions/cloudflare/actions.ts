@@ -63,8 +63,8 @@ export const generatePresignedUrlsAction = safeAction(
     );
 
     // thumbnail upload presigned url
-    const thumbnailPath = `${basePath}/thumbnail.svg`;
-    const thumbnnail = SVGfile as File;
+    const thumbnailPath = `${basePath}/thumbnail.jpg`;
+    const thumbnnail = JPGfile as File;
     const command = new PutObjectCommand({
       Bucket: publicBucket!, // private bucket name!
       Key: thumbnailPath,

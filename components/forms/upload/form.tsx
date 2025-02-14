@@ -6,7 +6,6 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
-
 import { generatePresignedUrlsAction } from '../../../actions/cloudflare/actions';
 import { Button } from '../../ui/button';
 import {
@@ -21,10 +20,6 @@ import {
 import { Input } from '../../ui/input';
 import { Progress } from '../../ui/progress'; // Adjust import path to wherever Progress is exported
 import { UploadElementSchema } from './schema';
-
-/**
- * TODO: BUG ALL FILES UPLOD TO SAME BUCKET
- */
 // Helper function (could be in a separate file if you prefer)
 function uploadFileWithProgress(
   file: File,
@@ -125,8 +120,8 @@ export default function UploadForm() {
           uploadFileWithProgress(data.DWGMfile, dwgMUrl.presignedUrl, pct =>
             setUploadProgress(prev => ({ ...prev, dwgM: pct }))
           ),
-        data.SVGfile &&
-          uploadFileWithProgress(data.SVGfile, publicPresignedUrl, pct =>
+        data.JPGfile &&
+          uploadFileWithProgress(data.JPGfile, publicPresignedUrl, pct =>
             setUploadProgress(prev => ({ ...prev, thumbnail: pct }))
           ),
       ]);
@@ -136,9 +131,17 @@ export default function UploadForm() {
         description: 'Your files were uploaded successfully!',
       });
 
-      // Optionally reset the form and progress
+      // Reset the form and progress
       form.reset();
       setUploadProgress({ svg: 0, jpg: 0, dwgFt: 0, dwgM: 0, thumbnail: 0 });
+
+      // Clear all file inputs
+      const fileInputs = document.querySelectorAll('input[type="file"]');
+      fileInputs.forEach(input => {
+        if (input instanceof HTMLInputElement) {
+          input.value = '';
+        }
+      });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       console.error('Upload error:', errorMessage);
@@ -184,13 +187,8 @@ export default function UploadForm() {
                 />
               </FormControl>
               <FormMessage />
-              <FormDescription>
-                Progress bar 1 is svg - Progress bar 2 is public svg
-              </FormDescription>
               {/* Show progress bar for the SVG file */}
               <Progress value={uploadProgress.svg} className="mt-2" />
-
-              <Progress value={uploadProgress.thumbnail} className="mt-2" />
             </FormItem>
           )}
         />
@@ -212,8 +210,12 @@ export default function UploadForm() {
                 />
               </FormControl>
               <FormMessage />
+              <FormDescription>
+                Progress bar 1 is jpg - Progress bar 2 is public jpg
+              </FormDescription>
               {/* Show progress bar for the JPG file */}
               <Progress value={uploadProgress.jpg} className="mt-2" />
+              <Progress value={uploadProgress.thumbnail} className="mt-2" />
             </FormItem>
           )}
         />
