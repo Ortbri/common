@@ -135,7 +135,7 @@ export default function UploadForm() {
       form.reset();
       setUploadProgress({ svg: 0, jpg: 0, dwgFt: 0, dwgM: 0, thumbnail: 0 });
 
-      // Clear all file inputs
+      // Clear all file inputs // TODO: not sure if proper way but works
       const fileInputs = document.querySelectorAll('input[type="file"]');
       fileInputs.forEach(input => {
         if (input instanceof HTMLInputElement) {

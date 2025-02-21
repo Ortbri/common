@@ -14,7 +14,7 @@ export async function GET() {
 
   if (error || !user) {
     console.error('Unauthorized access:', error);
-    return redirect('/pricing');
+  return redirect('/pricing');
   }
 
   // Retrieve the Stripe customer ID from KV
@@ -27,7 +27,9 @@ export async function GET() {
   // Sync subscription data
   await syncStripeDataToKV(stripeCustomerId);
 
-  // Redirect user to a private area or dashboard
+  // await 
+  // TODO: set data in supabase db as well? why or why not?
+
   return redirect('/user'); // Change to the correct success destination
 }
 
@@ -38,12 +40,14 @@ export async function GET() {
  async function syncStripeDataToKV(customerId: string) {
   try {
     // Fetch latest subscription data from Stripe
+    //TODO: see the response from this becuase of the two options that you get
     const subscriptions = await stripe.subscriptions.list({
       customer: customerId,
       limit: 1,
       status: 'all',
       expand: ['data.default_payment_method'],
     });
+    console.log("🔍 check subscriptions", JSON.stringify(subscriptions, null, 2))
 
     if (subscriptions.data.length === 0) {
       const subData = { status: 'none' };
@@ -58,8 +62,8 @@ export async function GET() {
     const subData = {
       subscriptionId: subscription.id,
       status: subscription.status,
-      priceId: subscription.items.data[0].price.id,
-      currentPeriodEnd: subscription.current_period_end,
+      priceId: subscription.items.data[0].price.id, // TODO: see what this comes out to be??
+      currentPeriodEnd: subscription.current_period_end, 
       currentPeriodStart: subscription.current_period_start,
       cancelAtPeriodEnd: subscription.cancel_at_period_end,
       paymentMethod:
@@ -71,6 +75,8 @@ export async function GET() {
             }
           : null,
     };
+    console.log("📐 setting data in kv", JSON.stringify(subData, null, 2))
+    
 
     await kv.set(`stripe:customer_id:${customerId}`, subData);
     return subData;

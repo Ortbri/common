@@ -1,13 +1,23 @@
 'use client';
+import { Download, Loader2 } from 'lucide-react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 import { generateDownloadUrlAction } from '../../../actions/cloudflare/actions';
 import { Button } from '../../ui/button';
-// import {sonnar}
 
-function DownloadForm({ id }: { id: string }) {
+function DownloadForm({
+  id,
+  fileType,
+}: {
+  id: string;
+  fileType: 'dwg-ft' | 'dwg-m' | 'svg' | 'jpg';
+}) {
+  const [isLoading, setIsLoading] = useState(false);
+
   async function handleDownloadAction() {
+    setIsLoading(true);
     try {
-      const { data } = await generateDownloadUrlAction({ elementId: id, fileType: 'dwg-ft' });
+      const { data } = await generateDownloadUrlAction({ elementId: id, fileType: fileType });
       if (!data?.downloadUrl) {
         toast.error('Failed to generate download URL');
         return;
@@ -18,59 +28,60 @@ function DownloadForm({ id }: { id: string }) {
         const response = await fetch(data.downloadUrl);
         const blob = await response.blob();
 
-        // Check if the File System Access API is supported
-        if (!('showSaveFilePicker' in window)) {
-          // Create a blob URL to force download
-          const blobUrl = window.URL.createObjectURL(new Blob([blob], { type: 'image/svg+xml' }));
-          const link = document.createElement('a');
-          link.href = blobUrl;
-          link.download = `drawing-${id}.dwg`;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          // Clean up the blob URL
-          window.URL.revokeObjectURL(blobUrl);
+        // Create a blob URL to force download
+        const blobUrl = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = blobUrl;
 
-          toast.success('Downloaded', {
-            description: 'Your file will be saved to your downloads folder',
-            duration: 5000,
-          });
-          return;
-        }
+        // Set filename based on type
+        const filename =
+          fileType === 'dwg-ft'
+            ? 'model-ft.dwg'
+            : fileType === 'dwg-m'
+              ? 'model-m.dwg'
+              : `model.${fileType}`;
 
-        // Show the file save dialog
-        // const handle = await (window as any).showSaveFilePicker({
-        //   suggestedName: `drawing-${id}.dwg`,
-        //   types: [
-        //     {
-        //       description: 'DWG File',
-        //       accept: { 'image/svg+xml': ['.dwg'] },
-        //     },
-        //   ],
-        // });
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
 
-        // Write the file
-        // const writable = await handle.createWritable();
-        // await writable.write(blob);
-        // await writable.close();
+        // Clean up the blob URL
+        window.URL.revokeObjectURL(blobUrl);
 
-        toast.success('File saved successfully', {
-          description: 'Your file has been saved to the location you chose',
+        toast.success('Downloaded', {
+          description: 'Your file will be saved to your downloads folder',
           duration: 5000,
         });
-      } catch (err: unknown) {
-        // User cancelled the save dialog
-        if (err && typeof err === 'object' && 'name' in err && err.name === 'AbortError') return;
-        throw err;
+      } catch (error) {
+        console.error(error);
+        toast.error('Failed to download file');
       }
     } catch (error) {
       console.error(error);
-      toast.error('Failed to save file');
+      toast.error('Failed to generate download URL');
+    } finally {
+      setIsLoading(false);
     }
   }
   return (
-    <Button onClick={handleDownloadAction} type="submit">
-      Download
+    <Button
+      onClick={handleDownloadAction}
+      type="submit"
+      className="w-full"
+      disabled={isLoading}
+      variant={'outline'}
+    >
+      {isLoading ? (
+        <>
+          Downloading...
+          <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+        </>
+      ) : (
+        <>
+          Download {fileType.toUpperCase()} <Download className="ml-2 h-4 w-4" />
+        </>
+      )}
     </Button>
   );
 }
