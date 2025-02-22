@@ -1,12 +1,19 @@
 'use client';
 
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Upload } from 'lucide-react';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
-import { generatePresignedUrlsAction } from '../../../actions/cloudflare/actions';
 import { Button } from '../../ui/button';
 import {
   Form,
@@ -18,39 +25,9 @@ import {
   FormMessage,
 } from '../../ui/form';
 import { Input } from '../../ui/input';
-import { Progress } from '../../ui/progress'; // Adjust import path to wherever Progress is exported
+import { FileUploadField } from './fileUploadField';
 import { UploadElementSchema } from './schema';
-// Helper function (could be in a separate file if you prefer)
-function uploadFileWithProgress(
-  file: File,
-  presignedUrl: string,
-  onProgress: (pct: number) => void
-): Promise<void> {
-  return new Promise<void>((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('PUT', presignedUrl, true);
-    xhr.setRequestHeader('Content-Type', file.type);
-
-    xhr.upload.addEventListener('progress', e => {
-      if (e.lengthComputable) {
-        const pct = (e.loaded / e.total) * 100;
-        onProgress(pct);
-      }
-    });
-
-    xhr.onload = () => {
-      if (xhr.status === 200) {
-        resolve();
-      } else {
-        reject(new Error(`Upload failed with status ${xhr.status}`));
-      }
-    };
-
-    xhr.onerror = () => reject(new Error('Network error on XHR upload'));
-
-    xhr.send(file);
-  });
-}
+import { useFileUpload } from './useFileUpload';
 
 export default function UploadForm() {
   const form = useForm<z.infer<typeof UploadElementSchema>>({
@@ -64,213 +41,114 @@ export default function UploadForm() {
     },
   });
 
-  // 1) Keep track of each file’s upload progress in local state.
-  const [uploadProgress, setUploadProgress] = useState({
-    svg: 0,
-    jpg: 0,
-    dwgFt: 0,
-    dwgM: 0,
-    thumbnail: 0,
-  });
+  const { uploadProgress, handleUpload, resetProgress } = useFileUpload(form);
 
   const {
     formState: { isSubmitting },
   } = form;
 
   const onSubmit = async (data: z.infer<typeof UploadElementSchema>) => {
-    try {
-      // Step 1: Insert row + get presigned URLs from the server action.
-      const result = await generatePresignedUrlsAction(data);
+    const success = await handleUpload(data);
 
-      if (result.serverError) {
-        form.setError('root', { message: result.serverError });
-        return;
-      }
-
-      const presignedUrls = result.data?.privatePresignedUrls;
-      if (!presignedUrls) {
-        form.setError('root', { message: 'No presigned URLs returned.' });
-        return;
-      }
-      const publicPresignedUrl = result.data?.publicPresignedUrl;
-      // const ss = result.data?.publicThumbnailUrl;
-      if (!publicPresignedUrl) {
-        form.setError('root', { message: 'No presigned URLs returned.' });
-        return;
-      }
-
-      // According to your server code, presignedUrls are [ svg, jpg, dwgFt, dwgM ]
-      const [svgUrl, jpgUrl, dwgFtUrl, dwgMUrl] = presignedUrls;
-
-      // Step 2: Upload each file in parallel (or sequentially). We'll do parallel.
-      await Promise.all([
-        data.SVGfile &&
-          uploadFileWithProgress(data.SVGfile, svgUrl.presignedUrl, pct =>
-            setUploadProgress(prev => ({ ...prev, svg: pct }))
-          ),
-        data.JPGfile &&
-          uploadFileWithProgress(data.JPGfile, jpgUrl.presignedUrl, pct =>
-            setUploadProgress(prev => ({ ...prev, jpg: pct }))
-          ),
-        data.DWGFTfile &&
-          uploadFileWithProgress(data.DWGFTfile, dwgFtUrl.presignedUrl, pct =>
-            setUploadProgress(prev => ({ ...prev, dwgFt: pct }))
-          ),
-        data.DWGMfile &&
-          uploadFileWithProgress(data.DWGMfile, dwgMUrl.presignedUrl, pct =>
-            setUploadProgress(prev => ({ ...prev, dwgM: pct }))
-          ),
-        data.JPGfile &&
-          uploadFileWithProgress(data.JPGfile, publicPresignedUrl, pct =>
-            setUploadProgress(prev => ({ ...prev, thumbnail: pct }))
-          ),
-      ]);
-
-      // Step 3: If all succeeded
+    if (success) {
       toast.success('Success!', {
         description: 'Your files were uploaded successfully!',
       });
 
-      // Reset the form and progress
-      form.reset();
-      setUploadProgress({ svg: 0, jpg: 0, dwgFt: 0, dwgM: 0, thumbnail: 0 });
-
-      // Clear all file inputs // TODO: not sure if proper way but works
-      const fileInputs = document.querySelectorAll('input[type="file"]');
-      fileInputs.forEach(input => {
-        if (input instanceof HTMLInputElement) {
-          input.value = '';
-        }
+      // Reset form with empty values for file inputs
+      form.reset({
+        title: '',
+        SVGfile: undefined,
+        JPGfile: undefined,
+        DWGFTfile: undefined,
+        DWGMfile: undefined,
       });
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      console.error('Upload error:', errorMessage);
-      form.setError('root', { message: `An unexpected error: ${errorMessage}` });
+      resetProgress();
     }
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        {/* Title */}
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="font-bold">Title of Folder</FormLabel>
-              <FormControl>
-                <Input type="text" placeholder="Man with hat" {...field} />
-              </FormControl>
-              <FormDescription>
-                This could be something like <span className="italic">man in hat</span>.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* SVG file input */}
-        <FormField
-          control={form.control}
-          name="SVGfile"
-          render={({ field: { onChange, ref } }) => (
-            <FormItem>
-              <FormLabel className="font-bold">SVG File</FormLabel>
-              <FormControl>
-                <Input
-                  type="file"
-                  className="min-h-24"
-                  accept="image/svg+xml"
-                  onChange={e => onChange(e.target.files?.[0])}
-                  ref={ref}
-                />
-              </FormControl>
-              <FormMessage />
-              {/* Show progress bar for the SVG file */}
-              <Progress value={uploadProgress.svg} className="mt-2" />
-            </FormItem>
-          )}
-        />
-
-        {/* JPG file input */}
-        <FormField
-          control={form.control}
-          name="JPGfile"
-          render={({ field: { onChange, ref } }) => (
-            <FormItem>
-              <FormLabel className="font-bold">JPG File</FormLabel>
-              <FormControl>
-                <Input
-                  type="file"
-                  className="min-h-24"
-                  accept="image/jpeg, image/jpg"
-                  onChange={e => onChange(e.target.files?.[0])}
-                  ref={ref}
-                />
-              </FormControl>
-              <FormMessage />
-              <FormDescription>
-                Progress bar 1 is jpg - Progress bar 2 is public jpg
-              </FormDescription>
-              {/* Show progress bar for the JPG file */}
-              <Progress value={uploadProgress.jpg} className="mt-2" />
-              <Progress value={uploadProgress.thumbnail} className="mt-2" />
-            </FormItem>
-          )}
-        />
-
-        {/* DWG file (Feet) */}
-        <FormField
-          control={form.control}
-          name="DWGFTfile"
-          render={({ field: { onChange, ref } }) => (
-            <FormItem>
-              <FormLabel className="font-bold">DWG File (FT)</FormLabel>
-              <FormControl>
-                <Input
-                  type="file"
-                  className="min-h-24"
-                  accept=".dwg"
-                  onChange={e => onChange(e.target.files?.[0])}
-                  ref={ref}
-                />
-              </FormControl>
-              <FormMessage />
-              {/* Show progress bar for the DWG FT file */}
-              <Progress value={uploadProgress.dwgFt} className="mt-2" />
-            </FormItem>
-          )}
-        />
-
-        {/* DWG file (Meters) */}
-        <FormField
-          control={form.control}
-          name="DWGMfile"
-          render={({ field: { onChange, ref } }) => (
-            <FormItem>
-              <FormLabel className="font-bold">DWG File (M)</FormLabel>
-              <FormControl>
-                <Input
-                  type="file"
-                  className="min-h-24"
-                  accept=".dwg"
-                  onChange={e => onChange(e.target.files?.[0])}
-                  ref={ref}
-                />
-              </FormControl>
-              <FormMessage />
-              {/* Show progress bar for the DWG M file */}
-              <Progress value={uploadProgress.dwgM} className="mt-2" />
-            </FormItem>
-          )}
-        />
-
-        <Button className="w-full" type="submit" size="lg" disabled={isSubmitting}>
-          <span className="font-bold">{isSubmitting ? 'UPLOADING...' : 'UPLOAD'}</span>
-          <Upload />
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button size={'sm'} className="gap-[2px]">
+          <span>New Upload</span>
         </Button>
-      </form>
-    </Form>
+      </SheetTrigger>
+      <SheetContent className="flex flex-col overflow-y-auto">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex h-full flex-col">
+            <div className="flex-1 space-y-6">
+              <SheetHeader>
+                <SheetTitle>Upload Element</SheetTitle>
+                <SheetDescription>
+                  Let me know if any more forms are needed - also could add drag and drop later
+                </SheetDescription>
+              </SheetHeader>
+
+              {/* Title field */}
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-bold">Title of Folder</FormLabel>
+                    <FormControl>
+                      <Input type="text" placeholder="Man with hat" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      This could be something like <span className="italic">man in hat</span>.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* File upload fields - making them more compact */}
+              <div className="space-y-4">
+                <FileUploadField
+                  control={form.control}
+                  name="SVGfile"
+                  label="SVG File"
+                  accept="image/svg+xml"
+                  progress={uploadProgress.svg}
+                />
+
+                <FileUploadField
+                  control={form.control}
+                  name="JPGfile"
+                  label="JPG File"
+                  accept="image/jpeg, image/jpg"
+                  progress={uploadProgress.jpg}
+                  secondaryProgress={uploadProgress.thumbnail}
+                />
+
+                <FileUploadField
+                  control={form.control}
+                  name="DWGFTfile"
+                  label="DWG File (FT)"
+                  accept=".dwg"
+                  progress={uploadProgress.dwgFt}
+                />
+
+                <FileUploadField
+                  control={form.control}
+                  name="DWGMfile"
+                  label="DWG File (M)"
+                  accept=".dwg"
+                  progress={uploadProgress.dwgM}
+                />
+              </div>
+            </div>
+
+            <SheetFooter className="flex-shrink-0">
+              <Button className="w-full" type="submit" size="lg" disabled={isSubmitting}>
+                <span className="mr-2 font-bold">{isSubmitting ? 'UPLOADING...' : 'UPLOAD'}</span>
+                <Upload className="h-4 w-4" />
+              </Button>
+            </SheetFooter>
+          </form>
+        </Form>
+      </SheetContent>
+    </Sheet>
   );
 }

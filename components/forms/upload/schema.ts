@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const UploadElementSchema = z.object({
-  title: z.string(),
+  title: z.string().min(1, 'Title is required').max(100, 'Title is too long'),
   SVGfile: z
     .instanceof(File, { message: 'File is required' })
     .refine(file => file.name.toLowerCase().endsWith('.svg'), 'Only SVG files allowed'),
