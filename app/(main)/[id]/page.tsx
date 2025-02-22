@@ -1,8 +1,8 @@
-function ElementId({ params }: { params: { id: string } }) {
-  return <div>ElementId: {params.id}</div>;
+export default async function ElementId({ params }: { params: Promise<{ slug: string }> }) {
+  const slug = (await params).slug;
+  return <div>ElementId: {slug}</div>;
 }
 
-export default ElementId;
 // import { Metadata, ResolvingMetadata } from 'next';
 // import { DownloadButton } from '../../../components/elements/download-button';
 // import type { Database } from '../../../database.types';
