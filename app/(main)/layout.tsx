@@ -3,11 +3,13 @@ import MarketingFooter from '../../components/footer';
 import MarketingHeader from '../../components/header';
 import { DownloadPreferenceProvider } from '../../contexts/download-preference';
 
-export default function MarketingLayout({
+export default function MainLayout({
   children,
-}: Readonly<{
+  modal,
+}: {
   children: React.ReactNode;
-}>) {
+  modal: React.ReactNode;
+}) {
   return (
     <DownloadPreferenceProvider>
       {/* <div className="min-h-screen">
@@ -19,6 +21,7 @@ export default function MarketingLayout({
         </div> */}
       <MarketingHeader />
       {children}
+      {modal}
       <MarketingFooter />
       {/* </div> */}
     </DownloadPreferenceProvider>

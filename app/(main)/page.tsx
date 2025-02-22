@@ -1,92 +1,79 @@
-// 'use client';
-
-import { Asterisk } from 'lucide-react';
+import HomeConditonal from '@/components/home-conditional';
+import { createClient } from '@/utils/supabase/server';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Button } from '../../components/ui/button';
 
-export default function Home() {
+type Element = {
+  element_id: string;
+  title: string;
+  preview_url?: string;
+  thumbnail_url?: string;
+  name?: string;
+  created_at: string;
+};
+
+async function getUploads(): Promise<Element[] | []> {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from('elements')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching uploads:', error);
+    return [];
+  }
+
+  return data;
+}
+/* -------------------------------------------------------------------------- */
+/*                                  HOME PAGE                                 */
+/* -------------------------------------------------------------------------- */
+export default async function Home() {
+  const data = await getUploads();
   return (
-    <div>
-      <HomeCTA />
-      <AllAccess />
+    <div className="flex flex-col">
+      <HomeConditonal />
+      <Assets assets={data} />
     </div>
   );
 }
-
-// const demoArray = [{ id: 123 }];
-
-function HomeCTA() {
+/* -------------------------------------------------------------------------- */
+/*                                   Assets                                   */
+/* -------------------------------------------------------------------------- */
+function Assets({ assets }: { assets: Element[] }) {
   return (
-    <div className="relative flex flex-col items-center justify-center pt-24">
-      {/* Content */}
-      <div className="flex flex-col items-center space-y-6 px-4 text-center">
-        {/* IDEA MOTION 360 of container - then MOTION OF ASTERICS 360 */}
-        {/* <div className="h-6 w-6 rounded-sm bg-card-foreground">
-            <Asterisk strokeWidth={2} color="#fff" />
-          </div> */}
-        {/* MOTION here */}
-        <h1 className="text-5xl font-semibold tracking-tighter lg:text-5xl">
-          <span className="">Ready to use</span>
-          <br />
-          Essential DWG 2D Designs
-        </h1>
-        <p className="max-w-[400] text-muted-foreground">
-          Featuring 500+ Essential 2D DWG Files | Instant Search | New Content Monthly.
-        </p>
-
-        {/* <EmailNotificationForm /> */}
-
-        {/* search and CTA button */}
-        <div className="flex w-full max-w-lg flex-1 items-center justify-center gap-2">
-          <Link href={'/signup'}>
-            <Button className="gap-1 whitespace-nowrap rounded-3xl" size={'sm'}>
-              Join for Free
-            </Button>
-          </Link>
-          <Link href={'/pricing'}>
-            <Button
-              className="gap-[6px] whitespace-nowrap rounded-3xl pr-[6px]"
-              size={'sm'}
-              variant={'outline'}
-            >
-              See Pricing
-              <div className="rounded-full bg-card-foreground p-[2px]">
-                <Asterisk strokeWidth={3} className="p-[2px]" color="white" />
-              </div>
-            </Button>
-          </Link>
-        </div>
-
-        <div className="flex flex-col items-center gap-2">
-          {/* <p className="pb-4 text-xs text-muted-foreground">Made by</p> */}
-          {/* <MadeBy /> */}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function AllAccess() {
-  return (
-    <div className="h-screen p-8">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-        {[...Array(12)].map((_, i) => (
-          <div
-            key={i}
-            className="relative aspect-square overflow-hidden rounded-3xl border bg-background shadow-sm transition-shadow hover:shadow-md"
-          >
-            <Image
-              src="/dimension.svg"
-              alt="Dimension diagram"
-              className="h-full w-full object-contain p-4"
-              width={100}
-              height={100}
-            />
+    <div className="grid h-screen w-full auto-rows-min grid-cols-1 gap-3 px-4 pt-14 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+      {assets.map(element => (
+        <Link
+          href={'/element'}
+          key={element.element_id}
+          passHref
+          shallow
+          className="group flex animate-fade-up flex-col gap-4 rounded-3xl p-4 opacity-0 [animation-delay:200ms] [animation-fill-mode:forwards] hover:border"
+        >
+          {element.thumbnail_url ? (
+            <div className="aspect-[5/3] w-[300px] overflow-hidden rounded-md">
+              <Image
+                src={element.thumbnail_url}
+                width={800}
+                height={480} // Maintains 5:3 aspect ratio
+                alt={element.title}
+                className="h-full w-full object-cover"
+              />
+            </div>
+          ) : (
+            <div className="flex h-[120px] w-[200px] items-center justify-center rounded-md">
+              <span className="text-gray-500">nothing here lol</span>
+            </div>
+          )}
+          <div className="flex flex-col justify-between px-7 py-3">
+            <h4 className="group-hover:animate-pulse">{element.title}</h4>
+            <p className="text-xs group-hover:animate-pulse">some description?</p>
           </div>
-        ))}
-        {/* <div className="absolute bottom-24 h-44 w-full bg-foreground/20" /> */}
-      </div>
+        </Link>
+      ))}
     </div>
   );
 }

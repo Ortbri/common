@@ -1,5 +1,5 @@
-function ElementId() {
-  return <div>ElementId</div>;
+function ElementId({ params }: { params: { id: string } }) {
+  return <div>ElementId: {params.id}</div>;
 }
 
 export default ElementId;

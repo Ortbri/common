@@ -1,9 +1,8 @@
 import { DownloadForm } from '@/components/forms/download';
 import { Separator } from '@/components/ui/separator';
-import { TrashIcon } from 'lucide-react';
+import DeleteButton from '@/features/admin/deleteElement';
 import Image from 'next/image';
 import UploadForm from '../../components/forms/upload/form';
-import { Button } from '../../components/ui/button';
 import {
   Card,
   CardContent,
@@ -12,14 +11,6 @@ import {
   CardHeader,
   CardTitle,
 } from '../../components/ui/card';
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '../../components/ui/sheet';
 import { createClient } from '../../utils/supabase/client';
 
 /* ------------------------------- get uploads ------------------------------ */
@@ -40,48 +31,12 @@ async function getUploads() {
 }
 
 /* ------------------------------ upload sheet ------------------------------ */
-function UploadSheet() {
-  return (
-    <Sheet>
-      <SheetTrigger asChild>
-        <Button size={'sm'} className="gap-[2px]">
-          <span>New Upload</span>
-        </Button>
-      </SheetTrigger>
-      <SheetContent>
-        <SheetHeader className="pb-3">
-          <SheetTitle>Upload Element</SheetTitle>
-          <SheetDescription>
-            Let me know if any more forms are needed - also could add drag and drop later
-          </SheetDescription>
-        </SheetHeader>
-        <UploadForm />
-      </SheetContent>
-    </Sheet>
-  );
-}
 
 /* -------------------------------------------------------------------------- */
 /*                                uploads page                                */
 /* -------------------------------------------------------------------------- */
 export default async function Uploads() {
-  // Fetch the upload data from Supabase.
   const uploadData = await getUploads();
-
-  /**
-   * element id
-   * title
-   * thumbnail_url
-   * svg_url
-   * jpg_url
-   * dwg_ft_url
-   * dwg_m_url
-   * searchabletext vector (not needed to show)
-   * clip_embedding(dont show)
-   * created_at
-   * updated_at
-   */
-
   return (
     <div className="flex flex-col gap-3 p-4">
       {/* top header */}
@@ -92,10 +47,13 @@ export default async function Uploads() {
             Do not do normal uploads until custom domain is set in cloudflare
           </p>
         </div>
-        <UploadSheet />
+        <UploadForm />
       </div>
       {/* content */}
-      <div className="3xl:grid-cols-6 grid w-full grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+      <div
+        className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+        style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(20rem, 1fr))' }}
+      >
         {/* cards */}
         {uploadData.map(item => (
           <Card key={item.element_id} className="flex h-full flex-col">
@@ -111,14 +69,13 @@ export default async function Uploads() {
             </CardHeader>
             <CardContent className="space-y-2">
               {item.thumbnail_url ? (
-                <div className="relative aspect-video w-full rounded-md bg-muted">
+                <div className="aspect-[5/3] w-[300px] overflow-hidden rounded-md">
                   <Image
-                    loading={'lazy'}
                     src={item.thumbnail_url}
+                    width={800}
+                    height={480} // Maintains 5:3 aspect ratio
                     alt={item.title}
-                    width={200}
-                    height={200}
-                    className="mb-4 h-48 w-full rounded-md object-cover"
+                    className="h-full w-full object-cover"
                   />
                 </div>
               ) : (
@@ -152,11 +109,7 @@ export default async function Uploads() {
                 </div>
               </div>
               <Separator />
-              <div className="w-full space-y-3">
-                <Button variant="destructive" size="sm" className="w-full" disabled>
-                  Delete <TrashIcon className="ml-2 h-4 w-4" /> (not implemented)
-                </Button>
-              </div>
+              <DeleteButton id={item.element_id} />
             </CardFooter>
           </Card>
         ))}
