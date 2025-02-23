@@ -19,12 +19,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: 'Common Project',
-  description: 'Featuring 500+ 2D Dimensions',
+  description: 'Featuring 500+ DWG Assets',
 };
 
 export default function RootLayout({
   children,
-  modal,
 }: {
   children: React.ReactNode;
   modal: React.ReactNode;
@@ -34,15 +33,11 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider>
           <QueryProvider>
-            <TooltipProvider>
-              {children}
-              {modal}
-            </TooltipProvider>
+            <TooltipProvider>{children}</TooltipProvider>
           </QueryProvider>
           <Toaster />
           <Analytics />
         </ThemeProvider>
-        <div id="modal-root" />
       </body>
     </html>
   );

@@ -55,13 +55,21 @@ export default function UploadForm() {
         description: 'Your files were uploaded successfully!',
       });
 
-      // Reset form with empty values for file inputs
+      // TODO: is there a better way at resetting the form && file inptu with query selectors
       form.reset({
         title: '',
         SVGfile: undefined,
         JPGfile: undefined,
         DWGFTfile: undefined,
         DWGMfile: undefined,
+      });
+
+      const fileInputs = document.querySelectorAll('input[type="file"]');
+
+      fileInputs.forEach(input => {
+        if (input instanceof HTMLInputElement) {
+          input.value = '';
+        }
       });
       resetProgress();
     }

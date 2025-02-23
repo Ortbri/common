@@ -47,14 +47,14 @@ function Assets({ assets }: { assets: Element[] }) {
     <div className="grid h-screen w-full auto-rows-min grid-cols-1 gap-3 px-4 pt-14 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
       {assets.map(element => (
         <Link
-          href={'/element'}
+          href={`/element/${element.element_id}`}
           key={element.element_id}
           passHref
           shallow
-          className="group flex animate-fade-up flex-col gap-4 rounded-3xl p-4 opacity-0 [animation-delay:200ms] [animation-fill-mode:forwards] hover:border"
+          className="group flex w-[400px] animate-fade-up flex-col gap-4 rounded-3xl p-4 opacity-0 [animation-delay:200ms] [animation-fill-mode:forwards] hover:border"
         >
           {element.thumbnail_url ? (
-            <div className="aspect-[5/3] w-[300px] overflow-hidden rounded-md">
+            <div className="aspect-[5/3] overflow-hidden rounded-md">
               <Image
                 src={element.thumbnail_url}
                 width={800}
