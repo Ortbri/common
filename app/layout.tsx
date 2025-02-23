@@ -22,12 +22,7 @@ export const metadata: Metadata = {
   description: 'Featuring 500+ DWG Assets',
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-  modal: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
