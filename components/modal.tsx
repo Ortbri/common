@@ -1,5 +1,6 @@
 'use client';
 
+import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
@@ -39,19 +40,41 @@ export default function Modal({ children }: ModalProps) {
   }, [handleKeyDown]);
 
   return createPortal(
-    <div
-      ref={overlay}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/25 backdrop-blur-sm"
-      onClick={handleClick}
-    >
-      <div ref={wrapper} className="relative w-full max-w-lg rounded-lg bg-white p-6 shadow-xl">
-        <button onClick={onClose} className="absolute right-2 top-2 p-2 hover:bg-gray-100">
-          ✕
-        </button>
-        {children}
-      </div>
-    </div>,
-    document.getElementById('modal-root') || document.body // TODO: find the proper way to render server side data for SEO
+    <AnimatePresence>
+      <motion.div
+        ref={overlay}
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/25 backdrop-blur-sm"
+        onClick={handleClick}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3, ease: 'easeInOut' }}
+      >
+        <motion.div
+          ref={wrapper}
+          className="relative w-full max-w-lg rounded-lg bg-white p-6 shadow-xl"
+          initial={{ scale: 0.9, y: 20, opacity: 0 }}
+          animate={{ scale: 1, y: 0, opacity: 1 }}
+          exit={{ scale: 0.9, y: 20, opacity: 0 }}
+          transition={{
+            duration: 0.3,
+            ease: [0.16, 1, 0.3, 1], // Custom spring-like easing
+            delay: 0.1, // Slight delay after overlay appears
+          }}
+        >
+          <motion.button
+            onClick={onClose}
+            className="absolute right-2 top-2 p-2 hover:bg-gray-100"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            ✕
+          </motion.button>
+          {children}
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>,
+    document.getElementById('modal-root') || document.body
   );
 }
 
