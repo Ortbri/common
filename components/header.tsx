@@ -6,6 +6,7 @@ import { Button } from './ui/button';
 
 const MarketingHeader = async () => {
   const supabase = await createClient();
+  // TODO: cached user needed + user preference via cookies
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -16,10 +17,10 @@ const MarketingHeader = async () => {
     <>
       <header
         className={
-          'fixed left-0 right-0 top-0 z-50 mx-auto w-full max-w-lg bg-border/50 backdrop-blur-3xl sm:mt-4 sm:rounded-3xl'
+          'bg-border/50 fixed top-0 right-0 left-0 z-50 mx-auto w-full max-w-lg backdrop-blur-3xl sm:mt-4 sm:rounded-3xl'
         }
       >
-        <div className="mx-auto flex items-center gap-12 py-2 pl-4 pr-2">
+        <div className="mx-auto flex items-center gap-12 py-2 pr-2 pl-4">
           {/* Logo placeholder */}
           <Link href={'/'}>
             <div className="flex flex-1 items-center">
@@ -35,7 +36,7 @@ const MarketingHeader = async () => {
             {user ? (
               <Link href={'/user'}>
                 <Avatar className="h-9 w-9">
-                  <AvatarFallback className="bg-foreground text-sm text-card">
+                  <AvatarFallback className="bg-foreground text-card text-sm">
                     {user.user_metadata.first_name.charAt(0) +
                       user.user_metadata.last_name.charAt(0)}
                   </AvatarFallback>
@@ -47,7 +48,7 @@ const MarketingHeader = async () => {
                   Log in
                 </Link>
                 <Link href={'/signup'}>
-                  <Button className="gap-1 whitespace-nowrap rounded-3xl" size={'sm'}>
+                  <Button className="gap-1 rounded-3xl whitespace-nowrap" size={'sm'}>
                     Join for Free
                   </Button>
                 </Link>
