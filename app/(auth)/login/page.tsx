@@ -6,7 +6,7 @@ export default function LoginPage() {
     <div className="flex flex-col space-y-8">
       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-bold">Login</h1>
-        <p className="text-balance text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-sm text-balance">
           Enter your email and password to Login
         </p>
       </div>
@@ -14,11 +14,11 @@ export default function LoginPage() {
       <div className="flex flex-col items-center gap-8">
         <Link
           href="/forgot-password"
-          className="text-sm text-foreground underline underline-offset-4"
+          className="text-foreground text-sm underline underline-offset-4"
         >
           Forgot Password?
         </Link>
-        <p className="text-balance text-center text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-center text-sm text-balance">
           Don&apos;t have an account?{' '}
           <Link href="/signup" className="text-foreground underline underline-offset-4">
             Sign up

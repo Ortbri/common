@@ -1,3 +1,4 @@
+import GoogleAuth from '@/features/auth/google-auth';
 import { redirect } from 'next/navigation';
 import React from 'react';
 import { createClient } from '../../utils/supabase/server';
@@ -8,6 +9,9 @@ export default async function AuthLayout({
   children: React.ReactNode;
 }>) {
   // INSTA NAVIGATE OUT if already logged in
+  /**
+   * TODO: use cache for not always fetching the user data
+   */
   const supabase = await createClient();
 
   const { data } = await supabase.auth.getUser();
@@ -22,8 +26,11 @@ export default async function AuthLayout({
           <div className="w-full max-w-xs">{children}</div>
         </div>
       </div>
-      <div className="relative hidden bg-primary lg:block">
-        <div className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale" />
+      <div className="bg-primary relative hidden lg:block">
+        <div className="absolute inset-0 flex h-full w-full items-center justify-center object-cover text-white dark:brightness-[0.2] dark:grayscale">
+          {/* GOOGLE AUTH HERE if mobile add under children */}
+          <GoogleAuth />
+        </div>
       </div>
     </div>
   );
