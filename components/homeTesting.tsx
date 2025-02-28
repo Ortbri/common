@@ -112,7 +112,7 @@ function AllAccess() {
         {[...Array(24)].map((_, i) => (
           <div
             key={i}
-            className="relative aspect-square overflow-hidden rounded-lg border bg-background shadow-sm transition-shadow hover:shadow-md"
+            className="relative aspect-square overflow-hidden rounded-lg border bg-background shadow-xs transition-shadow hover:shadow-md"
           >
             {/* <Image
               src="/dimension.svg"

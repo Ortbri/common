@@ -69,7 +69,7 @@ export default async function Uploads() {
             </CardHeader>
             <CardContent className="space-y-2">
               {item.thumbnail_url ? (
-                <div className="aspect-[5/3] w-[300px] overflow-hidden rounded-md">
+                <div className="aspect-5/3 w-[300px] overflow-hidden rounded-md">
                   <Image
                     src={item.thumbnail_url}
                     width={800}

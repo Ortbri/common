@@ -148,7 +148,7 @@ export default function UploadForm() {
               </div>
             </div>
 
-            <SheetFooter className="flex-shrink-0">
+            <SheetFooter className="shrink-0">
               <Button className="w-full" type="submit" size="lg" disabled={isSubmitting}>
                 <span className="mr-2 font-bold">{isSubmitting ? 'UPLOADING...' : 'UPLOAD'}</span>
                 <Upload className="h-4 w-4" />

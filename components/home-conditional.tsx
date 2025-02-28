@@ -15,7 +15,7 @@ function HomeConditonal() {
           <br />
           <span className="">Essential DWG 2D Designs</span>
         </h1>
-        <p className="max-w-[400] animate-fade-up text-muted-foreground opacity-0 [animation-delay:400ms] [animation-fill-mode:forwards]">
+        <p className="max-w-400 animate-fade-up text-muted-foreground opacity-0 [animation-delay:400ms] [animation-fill-mode:forwards]">
           Featuring 500+ Essential 2D DWG Files | Instant Search | New Content Monthly.
         </p>
         {/* buttons */}

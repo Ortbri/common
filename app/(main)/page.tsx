@@ -54,7 +54,7 @@ function Assets({ assets }: { assets: Element[] }) {
           className="group flex w-[400px] animate-fade-up flex-col gap-4 rounded-3xl p-4 opacity-0 [animation-delay:200ms] [animation-fill-mode:forwards] hover:border"
         >
           {element.thumbnail_url ? (
-            <div className="aspect-[5/3] overflow-hidden rounded-md">
+            <div className="aspect-5/3 overflow-hidden rounded-md">
               <Image
                 src={element.thumbnail_url}
                 width={800}

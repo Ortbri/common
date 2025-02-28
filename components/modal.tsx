@@ -43,7 +43,7 @@ export default function Modal({ children }: ModalProps) {
     <AnimatePresence>
       <motion.div
         ref={overlay}
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black/25 backdrop-blur-sm"
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/25 backdrop-blur-xs"
         onClick={handleClick}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -118,7 +118,7 @@ export default function Modal({ children }: ModalProps) {
 //   return createPortal(
 //     <div
 //       ref={overlay}
-//       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+//       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs"
 //       onClick={handleClick}
 //     >
 //       <div

@@ -112,7 +112,7 @@ export default function Offer() {
       <div className="relative flex h-[50rem] w-full flex-col items-center justify-center bg-background bg-dot-black/[0.2] dark:bg-dot-white/[0.2]">
         {/* Radial gradient for the container to give a faded look */}
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-background [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
-        {/* <p className="relative z-20 bg-gradient-to-b from-neutral-200 to-neutral-500 bg-clip-text py-8 text-4xl font-bold text-transparent sm:text-7xl"> */}
+        {/* <p className="relative z-20 bg-linear-to-b from-neutral-200 to-neutral-500 bg-clip-text py-8 text-4xl font-bold text-transparent sm:text-7xl"> */}
         <div className="mx-auto max-w-4xl text-center">
           <h2 className="text-4xl font-bold tracking-tight sm:text-6xl">Design like a Pro.</h2>
           <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">
@@ -126,7 +126,7 @@ export default function Offer() {
           <div className="relative flex rounded-full bg-gray-100 p-1 dark:bg-gray-800">
             {/* Sliding background */}
             <motion.div
-              className="absolute rounded-full bg-white shadow-sm dark:bg-gray-700"
+              className="absolute rounded-full bg-white shadow-xs dark:bg-gray-700"
               initial={false}
               animate={{
                 x: isYearly ? 'calc(100% - 4px)' : '2px',
