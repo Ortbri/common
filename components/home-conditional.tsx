@@ -19,7 +19,6 @@ function HomeConditonal() {
           Featuring 500+ Essential 2D DWG Files | Instant Search | New Content Monthly.
         </p>
         {/* buttons */}
-
         <div className="flex flex-1 animate-fade-up items-center justify-center gap-2 opacity-0 [animation-delay:600ms] [animation-fill-mode:forwards]">
           <Link href={'/signup'}>
             <Button className="gap-1 whitespace-nowrap rounded-3xl" size={'sm'}>

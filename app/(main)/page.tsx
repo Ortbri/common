@@ -44,7 +44,7 @@ export default async function Home() {
 /* -------------------------------------------------------------------------- */
 function Assets({ assets }: { assets: Element[] }) {
   return (
-    <div className="grid h-screen w-full auto-rows-min grid-cols-1 gap-3 px-4 pt-14 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+    <div className="grid h-screen w-full auto-rows-min grid-cols-1 gap-3 px-4 pt-14 md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5">
       {assets.map(element => (
         <Link
           href={`/element/${element.element_id}`}
