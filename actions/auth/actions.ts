@@ -1,5 +1,6 @@
 'use server';
 
+import { getURL } from '@/utils/helpers';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { LoginSchema } from '../../components/forms/login';
@@ -19,7 +20,7 @@ export async function resetPassword(formData: FormData) {
   const supabase = await createClient();
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/update-password`,
+    redirectTo: getURL("/auth/update-password")
   });
 
   if (error) {
