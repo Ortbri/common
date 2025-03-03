@@ -6,6 +6,7 @@ function HomeConditonal() {
   /**
    * TODO:  check cache, or use context?  conditionally show the proper UI
    */
+
   return (
     <div className="relative flex flex-col items-center justify-center pt-24">
       <div className="flex flex-col items-center space-y-6 px-4 text-center">
@@ -15,24 +16,24 @@ function HomeConditonal() {
           <br />
           <span className="">Essential DWG 2D Designs</span>
         </h1>
-        <p className="max-w-400 animate-fade-up text-muted-foreground opacity-0 [animation-delay:400ms] [animation-fill-mode:forwards]">
+        <p className="animate-fade-up text-muted-foreground max-w-400 opacity-0 [animation-delay:400ms] [animation-fill-mode:forwards]">
           Featuring 500+ Essential 2D DWG Files | Instant Search | New Content Monthly.
         </p>
         {/* buttons */}
-        <div className="flex flex-1 animate-fade-up items-center justify-center gap-2 opacity-0 [animation-delay:600ms] [animation-fill-mode:forwards]">
+        <div className="animate-fade-up flex flex-1 items-center justify-center gap-2 opacity-0 [animation-delay:600ms] [animation-fill-mode:forwards]">
           <Link href={'/signup'}>
-            <Button className="gap-1 whitespace-nowrap rounded-3xl" size={'sm'}>
+            <Button className="gap-1 rounded-3xl whitespace-nowrap" size={'sm'}>
               Join for Free
             </Button>
           </Link>
           <Link href={'/pricing'}>
             <Button
-              className="gap-[6px] whitespace-nowrap rounded-3xl pr-[6px]"
+              className="gap-[6px] rounded-3xl pr-[6px] whitespace-nowrap"
               size={'sm'}
               variant={'outline'}
             >
               See Pricing
-              <div className="rounded-full bg-card-foreground p-[2px]">
+              <div className="bg-card-foreground rounded-full p-[2px]">
                 <Asterisk strokeWidth={3} className="p-[2px]" color="white" />
               </div>
             </Button>
