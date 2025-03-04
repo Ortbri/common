@@ -1,6 +1,6 @@
 "use server"
 
-import { r2Admin } from "@/utils/cloudflare/admin";
+import { r2Admin } from "@/utils/cloudflare/admin-r2";
 import { createClient } from "@/utils/supabase/server";
 import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 

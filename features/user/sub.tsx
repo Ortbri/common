@@ -1,7 +1,7 @@
 // 'use client';
 import { STRIPE_SUB_KV_CACHE } from '../../types/stripe';
 import { getURL } from '../../utils/helpers';
-import { stripe } from '../../utils/stripe/config';
+import { stripe } from '../../utils/stripe/client';
 import { createClient } from '../../utils/supabase/server';
 import { kv } from '../../utils/upstash/client';
 import { InfoItem } from './InfoItem';

@@ -1,10 +1,14 @@
-import { loadStripe, Stripe } from '@stripe/stripe-js';
+import Stripe from 'stripe';
 
-let stripePromise: Promise<Stripe | null>;
-
-export const getStripe = () => {
-  if (!stripePromise) {
-    stripePromise = loadStripe( process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? '');
-  }
-  return stripePromise;
-};
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
+  // https://github.com/stripe/stripe-node#configuration
+  // https://stripe.com/docs/api/versioning
+  apiVersion: '2024-12-18.acacia',
+  // Register this as an official Stripe plugin.
+  // https://stripe.com/docs/building-plugins#setappinfo
+  appInfo: {
+    name: 'Common',
+    version: '0.0.0',
+    url: '',
+  },
+});

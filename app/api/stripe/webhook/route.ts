@@ -2,7 +2,7 @@ import { waitUntil } from '@vercel/functions';
 import { headers } from 'next/headers';
 import { NextResponse } from 'next/server';
 import type Stripe from 'stripe';
-import { stripe } from '../../../../utils/stripe/config';
+import { stripe } from '../../../../utils/stripe/client';
 import { kv } from '../../../../utils/upstash/client';
 
 const allowedEvents: Stripe.Event.Type[] = [

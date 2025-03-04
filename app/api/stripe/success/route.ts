@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
-import { stripe } from '../../../../utils/stripe/config';
+import { stripe } from '../../../../utils/stripe/client';
 import { createClient } from '../../../../utils/supabase/server';
 import { kv } from '../../../../utils/upstash/client';
 

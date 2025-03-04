@@ -1,10 +1,11 @@
 'use server';
+import { r2Download } from '@/utils/cloudflare/client-r2';
 import { GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { DownloadSchema } from '../../components/forms/download/schema';
 import { UploadElementSchema } from '../../components/forms/upload';
 import { STRIPE_SUB_KV_CACHE } from '../../types/stripe';
-import { r2Admin, r2Download } from '../../utils/cloudflare/admin';
+import { r2Admin } from '../../utils/cloudflare/admin-r2';
 import { safeAction } from '../../utils/safe-action';
 import { createClient } from '../../utils/supabase/server';
 import { kv } from '../../utils/upstash/client';
