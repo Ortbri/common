@@ -1,7 +1,6 @@
 import React from 'react';
 import MarketingFooter from '../../components/footer';
 import MarketingHeader from '../../components/header';
-import { DownloadPreferenceProvider } from '../../contexts/download-preference';
 
 export default function MainLayout({
   children,
@@ -11,11 +10,11 @@ export default function MainLayout({
   modal: React.ReactNode;
 }) {
   return (
-    <DownloadPreferenceProvider>
+    <div>
       <MarketingHeader />
       {children}
       {modal}
       <MarketingFooter />
-    </DownloadPreferenceProvider>
+    </div>
   );
 }

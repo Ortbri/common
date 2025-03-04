@@ -43,9 +43,9 @@ export async function deleteElementAction(element_id: string): Promise<DeleteEle
       element.dwg_m_url, // private
       // element.thumbnail_url // public bucket
     ].filter(Boolean); // Remove null/undefined values
-    const publicFiles = [
-      element.thumbnail_url, // public
-    ]
+    // const publicFiles = [
+    //   element.thumbnail_url, // public
+    // ]
 
     // console.log(JSON.stringify(publicFiles , null,2));
     // console.log(JSON.stringify(privateFiles , null,2));
@@ -74,7 +74,7 @@ export async function deleteElementAction(element_id: string): Promise<DeleteEle
 
 
     // base pth in presigned url retrival
-    const basePath = `elements/${element.element_id}`; // delete while foler
+    // const basePath = `elements/${element.element_id}`; // delete while foler
 
     //  why the async there?
      const deletePrivateBucketObject = privateFiles.map(async (fileUrl) => {
